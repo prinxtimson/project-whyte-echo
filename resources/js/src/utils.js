@@ -1,3 +1,3 @@
-//export const BASE_URL = "https://tritekconsultingltd.atlassian.net/rest/api/2";
+export const BASE_URL = "https://tricomms.herokuapp.com";
 
-export const BASE_URL = "http://127.0.0.1:8000";
+//export const BASE_URL = "http://127.0.0.1:8000";

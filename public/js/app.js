@@ -5534,8 +5534,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "BASE_URL": () => (/* binding */ BASE_URL)
 /* harmony export */ });
-//export const BASE_URL = "https://tritekconsultingltd.atlassian.net/rest/api/2";
-var BASE_URL = "http://127.0.0.1:8000";
+var BASE_URL = "https://tricomms.herokuapp.com"; //export const BASE_URL = "http://127.0.0.1:8000";
 
 /***/ }),
 
