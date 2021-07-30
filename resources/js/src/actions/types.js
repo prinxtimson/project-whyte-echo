@@ -1,0 +1,16 @@
+export const GET_ALL_ISSUES = "GET_ALL_ISSUES";
+export const POST_ISSUE = "POST_ISSUE";
+export const GET_PROJECT = "GET_PROJECT";
+export const SET_ALERT = "SET_ALERT";
+export const REMOVE_ALERT = "REMOVE_ALERT";
+export const GET_SPRINTS = "GET_SPRINTS";
+export const ON_CREATE_SPRINT = "ON_CREATE_SPRINT";
+export const DEL_ISSUE = "DEL_ISSUE";
+export const ON_EDIT_SPRINT = "ON_EDIT_SPRINT";
+export const CHANGE_STATUS = "CHANGE_STATUS";
+export const GET_BACKLOG = "GET_BACKLOG";
+export const GET_BOARDS = "GET_BOARDS";
+export const GET_SPRINT_ISSUES = "GET_SPRINT_ISSUES";
+export const MOVE_ISSUE = "MOVE_ISSUE";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const DEL_COMMENT = "DEL_COMMENT";
