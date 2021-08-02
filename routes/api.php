@@ -32,6 +32,7 @@ Route::post('/issues/{id}/attachments', [IssueController::class, 'attachments'])
 Route::post('/issues/{id}/transitions', [IssueController::class, 'transitions']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
+Route::post('/projects/user', [ProjectController::class, 'store']);
 
 Route::get('/sprint', [SprintController::class, 'index']);
 Route::post('/sprint', [SprintController::class, 'store']);

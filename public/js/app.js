@@ -3564,10 +3564,8 @@ var Comment = function Comment(_ref) {
       setBody = _useState4[1];
 
   var handleOnComment = function handleOnComment(e) {
-    var _currentIssue;
-
     e.preventDefault();
-    addComment(body, (_currentIssue = currentIssue) === null || _currentIssue === void 0 ? void 0 : _currentIssue.id, onComment);
+    addComment(body, issueId, onComment);
   };
 
   var onComment = function onComment() {

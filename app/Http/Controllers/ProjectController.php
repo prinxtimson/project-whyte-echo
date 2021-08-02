@@ -48,6 +48,17 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         //
+        $userField = [
+            "emailAddress" => $request['email'],
+            "displayName" => $request['name'],
+            "notification" => "true",
+
+        ];
+
+        $user = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->post('https://tricomms.atlassian.net/rest/api/2/user', $userField)->throw()->json();
+
+        return $user;
+
     }
 
     /**

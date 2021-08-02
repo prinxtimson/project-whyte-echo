@@ -9,7 +9,7 @@ const Comment = ({ comments = [], issueId, addComment, delComment }) => {
 
     const handleOnComment = (e) => {
         e.preventDefault();
-        addComment(body, currentIssue?.id, onComment);
+        addComment(body, issueId, onComment);
     };
 
     const onComment = () => {
