@@ -2524,15 +2524,16 @@ var createIssue = function createIssue(formData, onSuccess) {
 
             case 6:
               res = _context5.sent;
+              console.log(res.data);
               onSuccess();
               dispatch((0,_alert__WEBPACK_IMPORTED_MODULE_4__.setAlert)("Issue created successful", "success"));
               dispatch((0,_backlog__WEBPACK_IMPORTED_MODULE_5__.getBacklog)(project === null || project === void 0 ? void 0 : (_project$boards$ = project.boards[0]) === null || _project$boards$ === void 0 ? void 0 : _project$boards$.id));
               dispatch(getAllProgramIssues());
-              _context5.next = 18;
+              _context5.next = 19;
               break;
 
-            case 13:
-              _context5.prev = 13;
+            case 14:
+              _context5.prev = 14;
               _context5.t0 = _context5["catch"](3);
               errorMessages = _context5.t0.response.data.errorMessages;
               console.log(errorMessages);
@@ -2543,12 +2544,12 @@ var createIssue = function createIssue(formData, onSuccess) {
                 });
               }
 
-            case 18:
+            case 19:
             case "end":
               return _context5.stop();
           }
         }
-      }, _callee5, null, [[3, 13]]);
+      }, _callee5, null, [[3, 14]]);
     }));
 
     return function (_x5) {

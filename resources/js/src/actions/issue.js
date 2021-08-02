@@ -85,7 +85,7 @@ export const createIssue = (formData, onSuccess) => async (dispatch) => {
 
     try {
         const res = await axios.post(`${BASE_URL}/api/issues`, body, config);
-
+        console.log(res.data);
         onSuccess();
 
         dispatch(setAlert("Issue created successful", "success"));
