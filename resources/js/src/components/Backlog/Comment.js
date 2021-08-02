@@ -23,6 +23,7 @@ const Comment = ({ comments = [], issueId, addComment, delComment }) => {
                 <textarea
                     name="comment"
                     id="comment"
+                    value={body}
                     className="form-control form-control-lg"
                     placeholder="Add a comment"
                     onFocus={() => setFocused(true)}

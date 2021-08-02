@@ -3579,6 +3579,7 @@ var Comment = function Comment(_ref) {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
         name: "comment",
         id: "comment",
+        value: body,
         className: "form-control form-control-lg",
         placeholder: "Add a comment",
         onFocus: function onFocus() {
