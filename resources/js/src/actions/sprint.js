@@ -45,30 +45,32 @@ export const createSprint = (data) => async (dispatch) => {
     }
 };
 
-export const editSprint = (data, id, onSuccess) => async (dispatch) => {
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-        },
+export const editSprint =
+    (data, id, onSuccess = null) =>
+    async (dispatch) => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
+        const body = JSON.stringify(data);
+
+        try {
+            const res = await axios.put(
+                `${BASE_URL}/api/sprint/${id}`,
+                body,
+                config
+            );
+            onSuccess && onSuccess();
+            dispatch({
+                type: ON_EDIT_SPRINT,
+                payload: res.data,
+            });
+        } catch (err) {
+            console.log(err);
+        }
     };
-
-    const body = JSON.stringify(data);
-
-    try {
-        const res = await axios.put(
-            `${BASE_URL}/api/sprint/${id}`,
-            body,
-            config
-        );
-        onSuccess();
-        dispatch({
-            type: ON_EDIT_SPRINT,
-            payload: res.data,
-        });
-    } catch (err) {
-        console.log(err);
-    }
-};
 
 export const getSprintIssues = (id) => async (dispatch) => {
     try {

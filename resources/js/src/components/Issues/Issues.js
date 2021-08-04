@@ -1,16 +1,24 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import Container from "../Layouts/Container";
 import AddIssueForm from "./AddIssueForm";
-import { getAllProgramIssues } from "../../actions/issue";
 
-const Issues = ({ issues, getAllProgramIssues }) => {
-    useEffect(() => {
-        getAllProgramIssues();
-    }, []);
-
+const Issues = ({ issues, loading, params }) => {
+    if (loading) {
+        return (
+            <Container>
+                <div className="container p-5" style={{ minHeight: "89vh" }}>
+                    <div className="d-flex justify-content-center">
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </Container>
+        );
+    }
     return (
-        <Container>
+        <Container params={params}>
             <div className="p-2">
                 <div className="d-grid gap-2 col-12 mx-auto">
                     <button
@@ -89,6 +97,7 @@ const Issues = ({ issues, getAllProgramIssues }) => {
 
 const mapStateToProps = (state) => ({
     issues: state.issue.issues,
+    loading: state.issue.loading,
 });
 
-export default connect(mapStateToProps, { getAllProgramIssues })(Issues);
+export default connect(mapStateToProps)(Issues);

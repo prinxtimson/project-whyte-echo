@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Container from "../Layouts/Container";
 import { getSprintIssues } from "../../actions/sprint";
 
-const Sprints = ({ sprints, getSprintIssues, issues }) => {
+const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
     const [todoItems, setTodoItems] = useState([]);
     const [inProgressItems, setInProgressItems] = useState([]);
     const [doneItems, setDoneItems] = useState([]);
@@ -43,7 +43,7 @@ const Sprints = ({ sprints, getSprintIssues, issues }) => {
     }, [sprints]);
 
     return (
-        <Container>
+        <Container params={params}>
             <div className="container p-3">
                 <div className="d-flex gap-3 overflow-auto">
                     <DragDropContext onDragEnd={onDragEnd}>

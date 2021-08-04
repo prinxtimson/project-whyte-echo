@@ -2,13 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { delIssue } from "../../actions/issue";
 import { moveIssueToSprint } from "../../actions/sprint";
+import { setCurrentIssue } from "../../actions/backlog";
 
 const Issue = ({
     issue,
     sprints,
     delIssue,
     moveIssueToSprint,
-    handleOnClick,
+    setCurrentIssue,
 }) => {
     return (
         <div className="p-1 list-group-item list-group-item-action">
@@ -17,7 +18,7 @@ const Issue = ({
                     href="#"
                     aria-current="true"
                     className="d-flex gap-3 align-items-center list-group-item-action"
-                    onClick={() => handleOnClick(issue)}
+                    onClick={() => setCurrentIssue(issue)}
                 >
                     <h5 className="p-1 mb-0">{issue.key}</h5>
                     <div className="d-flex flex-grow-1">
@@ -57,18 +58,21 @@ const Issue = ({
                             Delete
                         </button>
                         <small className="text-secondary px-3">MOVE TO</small>
-                        {sprints.map((sprint) => (
-                            <a
-                                key={sprint.id}
-                                className="dropdown-item"
-                                href="#"
-                                onClick={() =>
-                                    moveIssueToSprint(issue, sprint.id)
-                                }
-                            >
-                                {sprint.name}
-                            </a>
-                        ))}
+                        {sprints.map(
+                            (sprint) =>
+                                sprint.state === "future" && (
+                                    <a
+                                        key={sprint.id}
+                                        className="dropdown-item"
+                                        href="#"
+                                        onClick={() =>
+                                            moveIssueToSprint(issue, sprint.id)
+                                        }
+                                    >
+                                        {sprint.name}
+                                    </a>
+                                )
+                        )}
                     </div>
                 </div>
             </div>
@@ -80,4 +84,8 @@ const mapStateToProps = (state) => ({
     sprints: state.sprint.sprints,
 });
 
-export default connect(mapStateToProps, { delIssue, moveIssueToSprint })(Issue);
+export default connect(mapStateToProps, {
+    delIssue,
+    moveIssueToSprint,
+    setCurrentIssue,
+})(Issue);

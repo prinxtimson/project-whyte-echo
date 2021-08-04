@@ -78,6 +78,19 @@ class IssueController extends Controller
         return $response->throw()->json();
     }
 
+    public function story_points(Request $request, $id, $boardId)
+    {
+        //
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->withHeaders([
+            "Content-Type" => "application/json",
+            "Accept" => 'application/json'
+        ])->put('https://tricomms.atlassian.net/rest/agile/1.0/issue/'.$id.'/estimation?boardId='.$boardId, 
+            $request->all()
+        );
+
+        return $response->throw()->json();
+    }
+
     public function attachments(Request $request, $id)
     {
         //

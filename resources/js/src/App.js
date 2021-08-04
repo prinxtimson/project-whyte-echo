@@ -1,26 +1,30 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Backlog from "./components/Backlog/Backlog";
-import Issues from "./components/Issues/Issues";
-import Sprints from "./components/Sprints/Sprints";
+import Admin from "./components/Admin/Admin";
+import Projects from "./components/Projects/Projects";
+import SingleProject from "./components/SingleProject/SingleProject";
 
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
-import { getProject } from "./actions/project";
+import { getProjects } from "./actions/project";
 
 const App = () => {
     useEffect(() => {
-        store.dispatch(getProject());
+        store.dispatch(getProjects());
     }, []);
     return (
         <Provider store={store}>
             <Router>
                 <Switch>
-                    <Route exact path="/backlog" component={Backlog} />
-                    <Route exact path="/sprints" component={Sprints} />
-                    <Route exact path="/" component={Issues} />
+                    <Route exact path="/admin" component={Admin} />
+                    <Route exact path="/" component={Projects} />
+                    <Route
+                        exact
+                        path="/projects/:projectKey/:pathName?"
+                        component={SingleProject}
+                    />
                 </Switch>
             </Router>
         </Provider>

@@ -4,11 +4,13 @@ import {
     DEL_ISSUE,
     GET_BACKLOG,
     MOVE_ISSUE,
+    SET_CURRENT_ISSUE,
 } from "../actions/types";
 
 const initialState = {
     loading: true,
     issues: [],
+    issue: null,
 };
 
 export default (state = initialState, action) => {
@@ -41,17 +43,20 @@ export default (state = initialState, action) => {
             };
         case ADD_COMMENT:
             index = state.issues.findIndex((item) => item.id === payload.id);
-            issue = state.issues.find((item) => item.id === payload.id);
-            issue.fields.comment.comments.push(payload.comment);
+            issue = state.issue;
+            comments = issue.fields.comment.comments;
+            comments = [...comments, payload.comment];
+            issue.fields.comment.comments = comments;
             state.issues.splice(index, 1, issue);
             return {
                 ...state,
                 loading: false,
                 issues: [...state.issues],
+                issue,
             };
         case DEL_COMMENT:
             index = state.issues.findIndex((item) => item.id === payload.id);
-            issue = state.issues.find((item) => item.id === payload.id);
+            issue = state.issue;
             comments = issue.fields.comment.comments.filter(
                 (item) => item.id !== payload.commentId
             );
@@ -61,6 +66,12 @@ export default (state = initialState, action) => {
                 ...state,
                 loading: false,
                 issues: [...state.issues],
+                issue,
+            };
+        case SET_CURRENT_ISSUE:
+            return {
+                ...state,
+                issue: payload,
             };
         default:
             return state;

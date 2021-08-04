@@ -30,8 +30,10 @@ Route::post('/issues/{id}/comment', [IssueController::class, 'comment']);
 Route::delete('/issues/{id}/comment/{commentId}', [IssueController::class, 'delComment']);
 Route::post('/issues/{id}/attachments', [IssueController::class, 'attachments']);
 Route::post('/issues/{id}/transitions', [IssueController::class, 'transitions']);
+Route::put('/issues/story_points/{id}/{boardId}', [IssueController::class, 'story_points']);
 
 Route::get('/projects', [ProjectController::class, 'index']);
+Route::get('/projects/{id}', [ProjectController::class, 'show']);
 Route::post('/projects/user', [ProjectController::class, 'store']);
 
 Route::get('/sprint', [SprintController::class, 'index']);

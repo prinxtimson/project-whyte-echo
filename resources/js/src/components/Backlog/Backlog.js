@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Container from "../Layouts/Container";
 import AddIssueForm from "./AddIssueForm";
-import { getBacklog } from "../../actions/backlog";
 import { createSprint } from "../../actions/sprint";
 import EditSprint from "./EditSprint";
 import Sprint from "./Sprint";
@@ -10,27 +9,10 @@ import "./style.css";
 import Issue from "./Issue";
 import IssueDetails from "./IssueDetails";
 
-const Backlog = ({ issues, getBacklog, createSprint, sprints, project }) => {
-    const [currentIssue, setCurrentIssue] = useState(null);
+const Backlog = ({ issues, issue, createSprint, sprints, project, params }) => {
     const [currentSprint, setCurrentSprint] = useState(null);
-
-    useEffect(() => {
-        getBacklog(project?.boards[0]?.id);
-    }, [project]);
-
-    useEffect(() => {
-        if (currentIssue) {
-            issues.map((item) => {
-                if (item.id === currentIssue.id) {
-                    setCurrentIssue(item);
-                }
-            });
-        }
-    }, [issues]);
-
-    const handleOnClick = (val) => {
-        setCurrentIssue(val);
-    };
+    const futureSprint = sprints.filter((item) => item.state === "future");
+    const nextSprint = futureSprint.length > 0 ? futureSprint[0].id : null;
 
     const onCreateSprintClick = () => {
         const data = {
@@ -41,7 +23,7 @@ const Backlog = ({ issues, getBacklog, createSprint, sprints, project }) => {
     };
 
     return (
-        <Container>
+        <Container params={params}>
             {project && (
                 <>
                     <div className="d-flex" style={{ maxHeight: "89vh" }}>
@@ -52,7 +34,6 @@ const Backlog = ({ issues, getBacklog, createSprint, sprints, project }) => {
                                         sprint.state === "active" && (
                                             <Sprint
                                                 sprint={sprint}
-                                                handleOnClick={handleOnClick}
                                                 setCurrentSprint={
                                                     setCurrentSprint
                                                 }
@@ -68,10 +49,10 @@ const Backlog = ({ issues, getBacklog, createSprint, sprints, project }) => {
                                         sprint.state === "future" && (
                                             <Sprint
                                                 sprint={sprint}
-                                                handleOnClick={handleOnClick}
                                                 setCurrentSprint={
                                                     setCurrentSprint
                                                 }
+                                                nextSprint={nextSprint}
                                                 key={sprint.id}
                                             />
                                         )
@@ -92,15 +73,11 @@ const Backlog = ({ issues, getBacklog, createSprint, sprints, project }) => {
                                 className="list-group flex-grow-1 border"
                                 style={{ minHeight: 50 }}
                             >
-                                {issues.map((issue) =>
-                                    issue.fields.issuetype.name === "Epic" ||
-                                    issue.fields.parent?.fields.issuetype
+                                {issues.map((item) =>
+                                    item.fields.issuetype.name === "Epic" ||
+                                    item.fields.parent?.fields.issuetype
                                         .name === "Story" ? null : (
-                                        <Issue
-                                            issue={issue}
-                                            handleOnClick={handleOnClick}
-                                            key={issue.id}
-                                        />
+                                        <Issue issue={item} key={item.id} />
                                     )
                                 )}
                             </div>
@@ -119,16 +96,11 @@ const Backlog = ({ issues, getBacklog, createSprint, sprints, project }) => {
                         </div>
                         <div
                             className={`p-2 overflow-auto ${
-                                currentIssue ? "d-block" : "d-none"
+                                issue ? "d-block" : "d-none"
                             }`}
                             style={{ width: "420px", maxHeight: "89vh" }}
                         >
-                            {currentIssue && (
-                                <IssueDetails
-                                    issue={currentIssue}
-                                    setCurrentIssue={setCurrentIssue}
-                                />
-                            )}
+                            {issue && <IssueDetails />}
                         </div>
                     </div>
                     <div
@@ -165,12 +137,12 @@ const Backlog = ({ issues, getBacklog, createSprint, sprints, project }) => {
 
 const mapStateToProps = (state) => ({
     issues: state.backlog.issues,
+    issue: state.backlog.issue,
     sprints: state.sprint.sprints,
     boards: state.board.boards,
     project: state.project.project,
 });
 
 export default connect(mapStateToProps, {
-    getBacklog,
     createSprint,
 })(Backlog);

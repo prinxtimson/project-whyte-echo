@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import { attachFile, moveIssueToEpic, createIssue } from "../../actions/issue";
+import { setCurrentIssue } from "../../actions/backlog";
 import Comment from "./Comment";
 
 const IssueDetails = ({
@@ -47,7 +48,7 @@ const IssueDetails = ({
     };
 
     return (
-        <div className="card">
+        <div className="card border-0">
             <div className="card-header d-flex p-2">
                 <div className="flex-shrink-0">
                     {issue?.fields.parent ? (
@@ -209,6 +210,33 @@ const IssueDetails = ({
                         ))}
                     </div>
                 </div>
+                <div className="accordion" id="accordionExample">
+                    <div className="card">
+                        <div
+                            className="card-header d-flex justify-content-between"
+                            id="headingOne"
+                        >
+                            <h2 className="mb-0">Details</h2>
+                            <button
+                                className="btn btn-link btn-block text-left"
+                                type="button"
+                                data-toggle="collapse"
+                                data-target="#collapseOne"
+                                aria-expanded="true"
+                                aria-controls="collapseOne"
+                            ></button>
+                        </div>
+
+                        <div
+                            id="collapseOne"
+                            className="collapse show"
+                            aria-labelledby="headingOne"
+                            data-parent="#accordionExample"
+                        >
+                            <div className="card-body"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className="card-footer">
                 <Comment
@@ -222,6 +250,7 @@ const IssueDetails = ({
 
 const mapStateToProps = (state) => ({
     issues: state.backlog.issues,
+    issue: state.backlog.issue,
     project: state.project.project,
 });
 
@@ -229,4 +258,5 @@ export default connect(mapStateToProps, {
     attachFile,
     moveIssueToEpic,
     createIssue,
+    setCurrentIssue,
 })(IssueDetails);

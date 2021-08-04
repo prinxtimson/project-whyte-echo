@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-const Container = ({ children, params }) => {
+const Container2 = ({ children }) => {
     return (
         <Fragment>
-            <header
+            <nav
                 className="navbar p-3 navbar-dark"
                 style={{ backgroundColor: "#293986" }}
             >
@@ -89,56 +89,12 @@ const Container = ({ children, params }) => {
                         </li>
                     </ul>
                 </div>
-            </header>
+            </nav>
             <div className="container-fluid">
-                <div className="row">
-                    <nav
-                        id="sidebarMenu"
-                        className="col-md-3 col-lg-2 d-md-block sidebar collapse"
-                        style={{ backgroundColor: "#c7a936" }}
-                    >
-                        <div className="position-sticky pt-3">
-                            <ul className="nav flex-column">
-                                <li className="nav-item">
-                                    <Link
-                                        className="nav-link text-light"
-                                        to={`/projects/${params?.projectKey}/`}
-                                    >
-                                        Issues
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className="nav-link text-light"
-                                        aria-current="page"
-                                        to={`/projects/${params?.projectKey}/backlog`}
-                                        replace
-                                    >
-                                        Backlog
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        className="nav-link text-light"
-                                        to={`/projects/${params?.projectKey}/active-sprint`}
-                                        replace
-                                    >
-                                        Active Sprint
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <main
-                        className="col-md-9 ms-sm-auto col-lg-10"
-                        style={{ paddingLeft: 10, paddingRight: 0 }}
-                    >
-                        {children}
-                    </main>
-                </div>
+                <main className="ms-auto">{children}</main>
             </div>
         </Fragment>
     );
 };
 
-export default Container;
+export default Container2;

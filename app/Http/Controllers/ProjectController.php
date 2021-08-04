@@ -16,15 +16,7 @@ class ProjectController extends Controller
     public function index()
     {
         //
-        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/api/2/project/PW')->throw()->json();
-
-        $boards = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/agile/1.0/board?projectKeyOrId=PW')->throw()->json();
-
-        $priority = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/api/2/priority')->json();
-
-        $response['boards'] = $boards['values'];
-
-        $response['priority'] = $priority;
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/api/2/project')->throw()->json();
 
         return $response;
     }
@@ -49,8 +41,8 @@ class ProjectController extends Controller
     {
         //
         $userField = [
-            "emailAddress" => $request['email'],
-            "displayName" => $request['name'],
+            "emailAddress" => $request['channelEmail'],
+            "displayName" => $request['channelName'],
             "notification" => "true",
 
         ];
@@ -70,6 +62,17 @@ class ProjectController extends Controller
     public function show($id)
     {
         //
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/api/2/project/'.$id)->throw()->json();
+
+        $boards = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/agile/1.0/board?projectKeyOrId='.$id)->throw()->json();
+
+        $priority = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/api/2/priority')->json();
+
+        $response['boards'] = $boards['values'];
+
+        $response['priority'] = $priority;
+
+        return $response;
     }
 
     /**

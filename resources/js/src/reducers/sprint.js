@@ -15,6 +15,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
     const { type, payload } = action;
+    let sprint;
 
     switch (type) {
         case GET_SPRINTS:
@@ -39,6 +40,8 @@ export default (state = initialState, action) => {
             const index = state.sprints.findIndex(
                 (item) => item.id === payload.id
             );
+            sprint = state.sprints[index];
+            payload.issues = sprint.issues;
             state.sprints.splice(index, 1, payload);
             return {
                 ...state,
@@ -49,7 +52,7 @@ export default (state = initialState, action) => {
             const index2 = state.sprints.findIndex(
                 (item) => item.id === payload.id
             );
-            const sprint = state.sprints.find((item) => item.id === payload.id);
+            sprint = state.sprints.find((item) => item.id === payload.id);
             sprint.issues.push(payload.issue);
             state.sprints.splice(index2, 1, sprint);
             return {

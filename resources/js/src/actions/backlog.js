@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../utils";
-import { GET_BACKLOG } from "./types";
+import { GET_BACKLOG, SET_CURRENT_ISSUE } from "./types";
 
 export const getBacklog = (id) => async (dispatch) => {
     try {
@@ -13,4 +13,11 @@ export const getBacklog = (id) => async (dispatch) => {
     } catch (err) {
         console.log(err);
     }
+};
+
+export const setCurrentIssue = (issue) => (dispatch) => {
+    dispatch({
+        type: SET_CURRENT_ISSUE,
+        payload: issue,
+    });
 };

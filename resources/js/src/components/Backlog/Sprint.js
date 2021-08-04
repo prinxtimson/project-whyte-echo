@@ -1,7 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
+import { setCurrentIssue } from "../../actions/backlog";
+import { editSprint } from "../../actions/sprint";
 
-const Sprint = ({ sprint, handleOnClick, setCurrentSprint }) => {
+const Sprint = ({
+    sprint,
+    sprints,
+    setCurrentIssue,
+    setCurrentSprint,
+    nextSprint,
+    editSprint,
+}) => {
+    const onCompleteSprint = () => {
+        const data = {
+            name: sprint.name,
+            startDate: sprint.startDate,
+            endDate: sprint.endDate,
+            state: "closed",
+            completeDate: new Date(),
+        };
+
+        editSprint(data, sprint.id);
+    };
+
     return (
         <div className="mb-2 card bg-light">
             <div className="card-header d-flex justify-content-between">
@@ -11,18 +32,24 @@ const Sprint = ({ sprint, handleOnClick, setCurrentSprint }) => {
                         <button
                             className="btn btn-light"
                             type="button"
-                            disabled
+                            onClick={onCompleteSprint}
                         >
                             Complete Sprint
                         </button>
                     ) : (
                         <button
-                            className="btn btn-light"
+                            className="btn btn-primary"
                             type="button"
                             data-toggle="modal"
                             data-target="#editSprintForm"
                             onClick={() => setCurrentSprint(sprint)}
-                            disabled
+                            disabled={
+                                nextSprint !== sprint.id ||
+                                sprints.find(
+                                    (item) => item.state === "active"
+                                ) ||
+                                sprint.issues.length === 0
+                            }
                         >
                             Start Sprint
                         </button>
@@ -39,7 +66,7 @@ const Sprint = ({ sprint, handleOnClick, setCurrentSprint }) => {
                             }`}
                             aria-current="true"
                             key={issue.id}
-                            onClick={() => handleOnClick(issue)}
+                            onClick={() => setCurrentIssue(issue)}
                         >
                             <div className="d-flex gap-3 w-100">
                                 <h5 className="p-1">{issue.key}</h5>
@@ -70,4 +97,6 @@ const mapStateToProps = (state) => ({
     project: state.project.project,
 });
 
-export default connect(mapStateToProps, {})(Sprint);
+export default connect(mapStateToProps, { setCurrentIssue, editSprint })(
+    Sprint
+);
