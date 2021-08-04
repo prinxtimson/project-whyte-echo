@@ -5520,7 +5520,7 @@ var SingleProject = function SingleProject(_ref) {
       getProjectById = _ref.getProjectById;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getProjectById(params.projectKey);
-  }, []);
+  }, [params.projectKey]);
 
   if (loading) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_2__.default, {

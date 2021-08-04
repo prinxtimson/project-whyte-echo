@@ -13,7 +13,7 @@ const SingleProject = ({
 }) => {
     useEffect(() => {
         getProjectById(params.projectKey);
-    }, []);
+    }, [params.projectKey]);
 
     if (loading) {
         return (
