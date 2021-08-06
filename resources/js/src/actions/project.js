@@ -1,6 +1,12 @@
 import axios from "axios";
 import { BASE_URL } from "../utils";
-import { GET_ALL_PROJECT, GET_PROJECT, PROJECT_LOADING } from "./types";
+import {
+    BACKLOG_LOADING,
+    GET_ALL_PROJECT,
+    GET_PROJECT,
+    ISSUE_LOADING,
+    PROJECT_LOADING,
+} from "./types";
 import { getSprints } from "./sprint";
 import { setAlert } from "./alert";
 import { getBacklog } from "./backlog";
@@ -21,12 +27,14 @@ export const getProjects = () => async (dispatch) => {
 
 export const getProjectById = (id) => async (dispatch) => {
     dispatch({ type: PROJECT_LOADING });
+    dispatch({ type: ISSUE_LOADING });
+    dispatch({ type: BACKLOG_LOADING });
     try {
         const res = await axios.get(`${BASE_URL}/api/projects/${id}`);
 
         dispatch(getSprints(res.data.boards[0].id));
         dispatch(getBacklog(res.data.boards[0].id));
-        dispatch(getAllProgramIssues());
+        dispatch(getAllProgramIssues(id));
 
         dispatch({
             type: GET_PROJECT,

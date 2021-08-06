@@ -13,10 +13,10 @@ class BoardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($projectKey)
     {
         //
-        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/agile/1.0/board?projectKeyOrId=PW');
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/agile/1.0/board?projectKeyOrId='.$projectKey);
 
         return $response->throw()->json();
     }

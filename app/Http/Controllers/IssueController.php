@@ -15,10 +15,10 @@ class IssueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($projectKey)
     {
         //
-        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/api/2/search?jql=project=PW&maxResults=1000');
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->get('https://tricomms.atlassian.net/rest/api/2/search?jql=project='.$projectKey.'&maxResults=1000');
 
         return $response->throw()->json();
     }
@@ -120,6 +120,12 @@ class IssueController extends Controller
     public function show($id)
     {
         //
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->withHeaders([
+            "Content-Type" => "application/json",
+            "Accept" => 'application/json'
+        ])->get('https://tricomms.atlassian.net/rest/api/2/issue/'.$id);
+
+        return $response->throw()->json();
     }
 
     /**

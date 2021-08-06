@@ -2,12 +2,13 @@ import axios from "axios";
 import { BASE_URL } from "../utils";
 import { ADD_COMMENT, DEL_COMMENT, DEL_ISSUE, GET_ALL_ISSUES } from "./types";
 import { setAlert } from "./alert";
-import { getBacklog } from "./backlog";
+import { getBacklog, setCurrentIssue } from "./backlog";
 import store from "../store";
+import { getSprints } from "./sprint";
 
-export const getAllProgramIssues = () => async (dispatch) => {
+export const getAllProgramIssues = (project) => async (dispatch) => {
     try {
-        const res = await axios.get(`${BASE_URL}/api/issues`);
+        const res = await axios.get(`${BASE_URL}/api/issues/${project}`);
 
         dispatch({
             type: GET_ALL_ISSUES,
@@ -143,6 +144,40 @@ export const moveIssueToEpic = (issue, id) => async (dispatch) => {
         );
         console.log(res.data);
         //dispatch(getBacklog(project?.boards[0]?.id));
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const updateStoryPoints = (value, issueId) => async (dispatch) => {
+    const project = store.getState().project.project;
+    const issue = store.getState().backlog.issue;
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    const body = JSON.stringify({ value });
+
+    try {
+        await axios.put(
+            `${BASE_URL}/api/issues/story_points/${issueId}/${project?.boards[0]?.id}`,
+            body,
+            config
+        );
+
+        if (issue?.id === issueId) {
+            const res = await axios.get(
+                `${BASE_URL}/api/issues/issue/${issueId}`
+            );
+            res.data.fields.sprint = issue.fields.sprint;
+            dispatch(setCurrentIssue(res.data));
+        }
+
+        dispatch(getBacklog(project?.boards[0]?.id));
+        dispatch(getSprints(project?.boards[0]?.id));
     } catch (err) {
         console.log(err);
     }

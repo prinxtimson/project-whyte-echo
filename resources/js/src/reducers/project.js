@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
         case PROJECT_LOADING:
             return {
                 ...state,
-                loading: false,
+                loading: true,
             };
         case GET_PROJECT:
             return {

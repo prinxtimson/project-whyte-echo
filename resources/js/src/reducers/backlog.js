@@ -1,5 +1,6 @@
 import {
     ADD_COMMENT,
+    BACKLOG_LOADING,
     DEL_COMMENT,
     DEL_ISSUE,
     GET_BACKLOG,
@@ -21,6 +22,11 @@ export default (state = initialState, action) => {
     let comments;
 
     switch (type) {
+        case BACKLOG_LOADING:
+            return {
+                ...state,
+                loading: true,
+            };
         case GET_BACKLOG:
             return {
                 ...state,

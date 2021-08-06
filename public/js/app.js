@@ -2316,7 +2316,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "delComment": () => (/* binding */ delComment),
 /* harmony export */   "createIssue": () => (/* binding */ createIssue),
 /* harmony export */   "attachFile": () => (/* binding */ attachFile),
-/* harmony export */   "moveIssueToEpic": () => (/* binding */ moveIssueToEpic)
+/* harmony export */   "moveIssueToEpic": () => (/* binding */ moveIssueToEpic),
+/* harmony export */   "updateStoryPoints": () => (/* binding */ updateStoryPoints)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -2327,6 +2328,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _alert__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./alert */ "./resources/js/src/actions/alert.js");
 /* harmony import */ var _backlog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./backlog */ "./resources/js/src/actions/backlog.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../store */ "./resources/js/src/store.js");
+/* harmony import */ var _sprint__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sprint */ "./resources/js/src/actions/sprint.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2339,7 +2341,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-var getAllProgramIssues = function getAllProgramIssues() {
+
+var getAllProgramIssues = function getAllProgramIssues(project) {
   return /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(dispatch) {
       var res;
@@ -2349,7 +2352,7 @@ var getAllProgramIssues = function getAllProgramIssues() {
             case 0:
               _context.prev = 0;
               _context.next = 3;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().get("".concat(_utils__WEBPACK_IMPORTED_MODULE_2__.BASE_URL, "/api/issues"));
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().get("".concat(_utils__WEBPACK_IMPORTED_MODULE_2__.BASE_URL, "/api/issues/").concat(project));
 
             case 3:
               res = _context.sent;
@@ -2653,6 +2656,67 @@ var moveIssueToEpic = function moveIssueToEpic(issue, id) {
     };
   }();
 };
+var updateStoryPoints = function updateStoryPoints(value, issueId) {
+  return /*#__PURE__*/function () {
+    var _ref8 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8(dispatch) {
+      var project, issue, config, body, _project$boards$2, _project$boards$3, _project$boards$4, res;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+        while (1) {
+          switch (_context8.prev = _context8.next) {
+            case 0:
+              project = _store__WEBPACK_IMPORTED_MODULE_6__.default.getState().project.project;
+              issue = _store__WEBPACK_IMPORTED_MODULE_6__.default.getState().backlog.issue;
+              config = {
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              };
+              body = JSON.stringify({
+                value: value
+              });
+              _context8.prev = 4;
+              _context8.next = 7;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().put("".concat(_utils__WEBPACK_IMPORTED_MODULE_2__.BASE_URL, "/api/issues/story_points/").concat(issueId, "/").concat(project === null || project === void 0 ? void 0 : (_project$boards$2 = project.boards[0]) === null || _project$boards$2 === void 0 ? void 0 : _project$boards$2.id), body, config);
+
+            case 7:
+              if (!((issue === null || issue === void 0 ? void 0 : issue.id) === issueId)) {
+                _context8.next = 13;
+                break;
+              }
+
+              _context8.next = 10;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().get("".concat(_utils__WEBPACK_IMPORTED_MODULE_2__.BASE_URL, "/api/issues/issue/").concat(issueId));
+
+            case 10:
+              res = _context8.sent;
+              res.data.fields.sprint = issue.fields.sprint;
+              dispatch((0,_backlog__WEBPACK_IMPORTED_MODULE_5__.setCurrentIssue)(res.data));
+
+            case 13:
+              dispatch((0,_backlog__WEBPACK_IMPORTED_MODULE_5__.getBacklog)(project === null || project === void 0 ? void 0 : (_project$boards$3 = project.boards[0]) === null || _project$boards$3 === void 0 ? void 0 : _project$boards$3.id));
+              dispatch((0,_sprint__WEBPACK_IMPORTED_MODULE_7__.getSprints)(project === null || project === void 0 ? void 0 : (_project$boards$4 = project.boards[0]) === null || _project$boards$4 === void 0 ? void 0 : _project$boards$4.id));
+              _context8.next = 20;
+              break;
+
+            case 17:
+              _context8.prev = 17;
+              _context8.t0 = _context8["catch"](4);
+              console.log(_context8.t0);
+
+            case 20:
+            case "end":
+              return _context8.stop();
+          }
+        }
+      }, _callee8, null, [[4, 17]]);
+    }));
+
+    return function (_x8) {
+      return _ref8.apply(this, arguments);
+    };
+  }();
+};
 
 /***/ }),
 
@@ -2742,33 +2806,39 @@ var getProjectById = function getProjectById(id) {
               dispatch({
                 type: _types__WEBPACK_IMPORTED_MODULE_3__.PROJECT_LOADING
               });
-              _context2.prev = 1;
-              _context2.next = 4;
+              dispatch({
+                type: _types__WEBPACK_IMPORTED_MODULE_3__.ISSUE_LOADING
+              });
+              dispatch({
+                type: _types__WEBPACK_IMPORTED_MODULE_3__.BACKLOG_LOADING
+              });
+              _context2.prev = 3;
+              _context2.next = 6;
               return axios__WEBPACK_IMPORTED_MODULE_1___default().get("".concat(_utils__WEBPACK_IMPORTED_MODULE_2__.BASE_URL, "/api/projects/").concat(id));
 
-            case 4:
+            case 6:
               res = _context2.sent;
               dispatch((0,_sprint__WEBPACK_IMPORTED_MODULE_4__.getSprints)(res.data.boards[0].id));
               dispatch((0,_backlog__WEBPACK_IMPORTED_MODULE_6__.getBacklog)(res.data.boards[0].id));
-              dispatch((0,_issue__WEBPACK_IMPORTED_MODULE_7__.getAllProgramIssues)());
+              dispatch((0,_issue__WEBPACK_IMPORTED_MODULE_7__.getAllProgramIssues)(id));
               dispatch({
                 type: _types__WEBPACK_IMPORTED_MODULE_3__.GET_PROJECT,
                 payload: res.data
               });
-              _context2.next = 14;
+              _context2.next = 16;
               break;
 
-            case 11:
-              _context2.prev = 11;
-              _context2.t0 = _context2["catch"](1);
+            case 13:
+              _context2.prev = 13;
+              _context2.t0 = _context2["catch"](3);
               console.log(_context2.t0);
 
-            case 14:
+            case 16:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[1, 11]]);
+      }, _callee2, null, [[3, 13]]);
     }));
 
     return function (_x2) {
@@ -3157,7 +3227,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ADD_COMMENT": () => (/* binding */ ADD_COMMENT),
 /* harmony export */   "DEL_COMMENT": () => (/* binding */ DEL_COMMENT),
 /* harmony export */   "SET_CURRENT_ISSUE": () => (/* binding */ SET_CURRENT_ISSUE),
-/* harmony export */   "PROJECT_LOADING": () => (/* binding */ PROJECT_LOADING)
+/* harmony export */   "PROJECT_LOADING": () => (/* binding */ PROJECT_LOADING),
+/* harmony export */   "ISSUE_LOADING": () => (/* binding */ ISSUE_LOADING),
+/* harmony export */   "BACKLOG_LOADING": () => (/* binding */ BACKLOG_LOADING)
 /* harmony export */ });
 var GET_ALL_ISSUES = "GET_ALL_ISSUES";
 var POST_ISSUE = "POST_ISSUE";
@@ -3178,6 +3250,8 @@ var ADD_COMMENT = "ADD_COMMENT";
 var DEL_COMMENT = "DEL_COMMENT";
 var SET_CURRENT_ISSUE = "SET_CURRENT_ISSUE";
 var PROJECT_LOADING = "PROJECT_LOADING";
+var ISSUE_LOADING = "ISSUE_LOADING";
+var BACKLOG_LOADING = "BACKLOG_LOADING";
 
 /***/ }),
 
@@ -4158,6 +4232,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_sprint__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../actions/sprint */ "./resources/js/src/actions/sprint.js");
 /* harmony import */ var _actions_backlog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/backlog */ "./resources/js/src/actions/backlog.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -4173,7 +4259,29 @@ var Issue = function Issue(_ref) {
       sprints = _ref.sprints,
       delIssue = _ref.delIssue,
       moveIssueToSprint = _ref.moveIssueToSprint,
-      setCurrentIssue = _ref.setCurrentIssue;
+      setCurrentIssue = _ref.setCurrentIssue,
+      updateStoryPoints = _ref.updateStoryPoints;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      value = _useState2[0],
+      setValue = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      editStoryPoints = _useState4[0],
+      setEditStoryPoints = _useState4[1];
+
+  var handleEditStoryPointsClick = function handleEditStoryPointsClick() {
+    setEditStoryPoints(true);
+    setValue(issue.fields.customfield_10016 || "");
+  };
+
+  var onStoryPointsSubmit = function onStoryPointsSubmit() {
+    updateStoryPoints(value, issue.id);
+    setEditStoryPoints(false);
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
     className: "p-1 list-group-item list-group-item-action",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -4197,10 +4305,50 @@ var Issue = function Issue(_ref) {
             className: "p-1 mb-0 flex-shrink-0 text-primary font-weight-bold",
             children: (_issue$fields$parent = issue.fields.parent) === null || _issue$fields$parent === void 0 ? void 0 : _issue$fields$parent.fields.summary
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
-          className: "p-1 mb-0 flex-shrink-0",
-          children: (_issue$fields$status = issue.fields.status) === null || _issue$fields$status === void 0 ? void 0 : _issue$fields$status.name
         })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        style: {
+          zIndex: 100
+        },
+        children: !editStoryPoints ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+          type: "button",
+          onClick: handleEditStoryPointsClick,
+          className: "btn btn-light btn-sm",
+          children: issue.fields.customfield_10016
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          className: "d-flex",
+          style: {
+            width: "100%"
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+            type: "number",
+            name: "storyPoints",
+            value: value,
+            className: "form-control",
+            onChange: function onChange(e) {
+              return setValue(e.target.value);
+            }
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+            type: "button",
+            className: "btn btn-light btn-sm",
+            onClick: onStoryPointsSubmit,
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+              className: "bi bi-check2"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+            type: "button",
+            className: "btn btn-light btn-sm",
+            onClick: function onClick() {
+              return setEditStoryPoints(false);
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+              className: "bi bi-x"
+            })
+          })]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+        className: "p-1 mb-0 flex-shrink-0",
+        children: (_issue$fields$status = issue.fields.status) === null || _issue$fields$status === void 0 ? void 0 : _issue$fields$status.name
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         className: "dropleft",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
@@ -4253,7 +4401,8 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, {
   delIssue: _actions_issue__WEBPACK_IMPORTED_MODULE_2__.delIssue,
   moveIssueToSprint: _actions_sprint__WEBPACK_IMPORTED_MODULE_3__.moveIssueToSprint,
-  setCurrentIssue: _actions_backlog__WEBPACK_IMPORTED_MODULE_4__.setCurrentIssue
+  setCurrentIssue: _actions_backlog__WEBPACK_IMPORTED_MODULE_4__.setCurrentIssue,
+  updateStoryPoints: _actions_issue__WEBPACK_IMPORTED_MODULE_2__.updateStoryPoints
 })(Issue));
 
 /***/ }),
@@ -4296,13 +4445,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var IssueDetails = function IssueDetails(_ref) {
-  var _issue$fields$parent;
+  var _issue$fields$parent, _issue$fields$sprint, _issue$fields$priorit, _issue$fields$reporte;
 
   var issue = _ref.issue,
       issues = _ref.issues,
       attachFile = _ref.attachFile,
       setCurrentIssue = _ref.setCurrentIssue,
       moveIssueToEpic = _ref.moveIssueToEpic,
+      updateStoryPoints = _ref.updateStoryPoints,
       createIssue = _ref.createIssue,
       project = _ref.project;
   var fileInput = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
@@ -4312,10 +4462,25 @@ var IssueDetails = function IssueDetails(_ref) {
       summary = _useState2[0],
       setSummary = _useState2[1];
 
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      value = _useState4[0],
+      setValue = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      editStoryPoints = _useState6[0],
+      setEditStoryPoints = _useState6[1];
+
   var handleUploadFile = function handleUploadFile(selectedFile, id) {
     var file = new FormData();
     file.append("file", selectedFile);
     attachFile(file, id);
+  };
+
+  var handleEditStoryPointsClick = function handleEditStoryPointsClick(val) {
+    setEditStoryPoints(val.id);
+    setValue(val.fields.customfield_10016 || "");
   };
 
   var handleCreateSubtask = function handleCreateSubtask(parent) {
@@ -4339,6 +4504,12 @@ var IssueDetails = function IssueDetails(_ref) {
 
   var onSubTask = function onSubTask() {
     setSummary("");
+  };
+
+  var onStoryPointsSubmit = function onStoryPointsSubmit(issueId) {
+    console.log(issueId);
+    updateStoryPoints(value, issueId);
+    setEditStoryPoints(null);
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -4497,7 +4668,7 @@ var IssueDetails = function IssueDetails(_ref) {
                   className: "p-1",
                   children: subtask.key
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-                  className: "d-flex flex-grow-1",
+                  className: "d-flex flex-grow-1 overflow-hidden",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
                     className: "p-1  text-truncate",
                     children: subtask.fields.summary
@@ -4518,7 +4689,7 @@ var IssueDetails = function IssueDetails(_ref) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
             className: "card-header d-flex justify-content-between",
             id: "headingOne",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h4", {
               className: "mb-0",
               children: "Details"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
@@ -4534,8 +4705,102 @@ var IssueDetails = function IssueDetails(_ref) {
             className: "collapse show",
             "aria-labelledby": "headingOne",
             "data-parent": "#accordionExample",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-              className: "card-body"
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "card-body",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                className: "row py-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                    className: "font-weight-bold",
+                    children: "Sprint"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                    children: (_issue$fields$sprint = issue.fields.sprint) === null || _issue$fields$sprint === void 0 ? void 0 : _issue$fields$sprint.name
+                  })
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                className: "row py-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                    className: "font-weight-bold",
+                    children: "Priority"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                    children: (_issue$fields$priorit = issue.fields.priority) === null || _issue$fields$priorit === void 0 ? void 0 : _issue$fields$priorit.name
+                  })
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                className: "row py-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                    className: "font-weight-bold",
+                    children: "Story point estimate"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: editStoryPoints === issue.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                    className: "d-flex",
+                    style: {
+                      width: "100%"
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                      type: "number",
+                      name: "storyPoints",
+                      value: value,
+                      className: "form-control",
+                      onChange: function onChange(e) {
+                        return setValue(e.target.value);
+                      }
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-light btn-sm",
+                      onClick: function onClick() {
+                        return onStoryPointsSubmit(issue.id);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                        className: "bi bi-check2"
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                      type: "button",
+                      className: "btn btn-light btn-sm",
+                      onClick: function onClick() {
+                        return setEditStoryPoints(null);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                        className: "bi bi-x"
+                      })
+                    })]
+                  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                    type: "button",
+                    onClick: function onClick() {
+                      return handleEditStoryPointsClick(issue);
+                    },
+                    className: "btn btn-light btn-sm",
+                    children: issue.fields.customfield_10016
+                  })
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                className: "row py-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                    className: "font-weight-bold",
+                    children: "Reporter"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "col-6 align-items-center",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                    children: (_issue$fields$reporte = issue.fields.reporter) === null || _issue$fields$reporte === void 0 ? void 0 : _issue$fields$reporte.displayName
+                  })
+                })]
+              })]
             })
           })]
         })
@@ -4562,7 +4827,8 @@ var mapStateToProps = function mapStateToProps(state) {
   attachFile: _actions_issue__WEBPACK_IMPORTED_MODULE_2__.attachFile,
   moveIssueToEpic: _actions_issue__WEBPACK_IMPORTED_MODULE_2__.moveIssueToEpic,
   createIssue: _actions_issue__WEBPACK_IMPORTED_MODULE_2__.createIssue,
-  setCurrentIssue: _actions_backlog__WEBPACK_IMPORTED_MODULE_3__.setCurrentIssue
+  setCurrentIssue: _actions_backlog__WEBPACK_IMPORTED_MODULE_3__.setCurrentIssue,
+  updateStoryPoints: _actions_issue__WEBPACK_IMPORTED_MODULE_2__.updateStoryPoints
 })(IssueDetails));
 
 /***/ }),
@@ -4582,7 +4848,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_backlog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/backlog */ "./resources/js/src/actions/backlog.js");
 /* harmony import */ var _actions_sprint__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../actions/sprint */ "./resources/js/src/actions/sprint.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _actions_issue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/issue */ "./resources/js/src/actions/issue.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -4598,7 +4878,23 @@ var Sprint = function Sprint(_ref) {
       setCurrentIssue = _ref.setCurrentIssue,
       setCurrentSprint = _ref.setCurrentSprint,
       nextSprint = _ref.nextSprint,
-      editSprint = _ref.editSprint;
+      editSprint = _ref.editSprint,
+      updateStoryPoints = _ref.updateStoryPoints;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      value = _useState2[0],
+      setValue = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      editStoryPoints = _useState4[0],
+      setEditStoryPoints = _useState4[1];
+
+  var handleEditStoryPointsClick = function handleEditStoryPointsClick(val) {
+    setEditStoryPoints(val.id);
+    setValue(val.fields.customfield_10016 || "");
+  };
 
   var onCompleteSprint = function onCompleteSprint() {
     var data = {
@@ -4611,20 +4907,26 @@ var Sprint = function Sprint(_ref) {
     editSprint(data, sprint.id);
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+  var onStoryPointsSubmit = function onStoryPointsSubmit(issueId) {
+    console.log(issueId);
+    updateStoryPoints(value, issueId);
+    setEditStoryPoints(null);
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     className: "mb-2 card bg-light",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "card-header d-flex justify-content-between",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h6", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
         className: "font-weight-bold",
         children: sprint.name
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-        children: sprint.state === "active" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        children: sprint.state === "active" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
           className: "btn btn-light",
           type: "button",
           onClick: onCompleteSprint,
           children: "Complete Sprint"
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
           className: "btn btn-primary",
           type: "button",
           "data-toggle": "modal",
@@ -4638,39 +4940,82 @@ var Sprint = function Sprint(_ref) {
           children: "Start Sprint"
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "card-body",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "list-group",
         children: (_sprint$issues = sprint.issues) === null || _sprint$issues === void 0 ? void 0 : _sprint$issues.map(function (issue, index) {
           var _issue$fields$parent, _issue$fields$status;
 
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
-            href: "#",
-            className: "p-1 list-group-item list-group-item-action ".concat(index % 2 === 0 && "list-group-item-primary"),
-            "aria-current": "true",
-            onClick: function onClick() {
-              return setCurrentIssue(issue);
-            },
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "d-flex gap-3 w-100",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
-                className: "p-1",
-                children: issue.key
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-                className: "d-flex flex-grow-1",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
-                  className: "p-1  text-truncate",
-                  children: issue.fields.summary
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
-                  className: "p-1 flex-shrink-0 text-primary font-weight-bold",
-                  children: (_issue$fields$parent = issue.fields.parent) === null || _issue$fields$parent === void 0 ? void 0 : _issue$fields$parent.fields.summary
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+            className: "d-flex p-1 list-group-item list-group-item-action ".concat(index % 2 === 0 && "list-group-item-primary"),
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+              href: "#",
+              className: "flex-grow-1",
+              "aria-current": "true",
+              onClick: function onClick() {
+                return setCurrentIssue(issue);
+              },
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                className: "d-flex gap-3 w-100",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                  className: "p-1",
+                  children: issue.key
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                  className: "d-flex flex-grow-1",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                    className: "p-1  text-truncate",
+                    children: issue.fields.summary
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                    className: "p-1 flex-shrink-0 text-primary font-weight-bold",
+                    children: (_issue$fields$parent = issue.fields.parent) === null || _issue$fields$parent === void 0 ? void 0 : _issue$fields$parent.fields.summary
+                  })]
                 })]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
-                className: "p-1 flex-shrink-0",
-                children: (_issue$fields$status = issue.fields.status) === null || _issue$fields$status === void 0 ? void 0 : _issue$fields$status.name
+              })
+            }), editStoryPoints === issue.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "d-flex",
+              style: {
+                width: 180,
+                zIndex: 100
+              },
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                type: "number",
+                name: "storyPoints",
+                value: value,
+                className: "form-control",
+                onChange: function onChange(e) {
+                  return setValue(e.target.value);
+                }
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                type: "button",
+                className: "btn btn-light btn-sm",
+                onClick: function onClick() {
+                  return onStoryPointsSubmit(issue.id);
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                  className: "bi bi-check2"
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                type: "button",
+                className: "btn btn-light btn-sm",
+                onClick: function onClick() {
+                  return setEditStoryPoints(null);
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                  className: "bi bi-x"
+                })
               })]
-            })
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+              type: "button",
+              onClick: function onClick() {
+                return handleEditStoryPointsClick(issue);
+              },
+              className: "btn btn-light btn-sm",
+              children: issue.fields.customfield_10016
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+              className: "p-1 flex-shrink-0",
+              children: (_issue$fields$status = issue.fields.status) === null || _issue$fields$status === void 0 ? void 0 : _issue$fields$status.name
+            })]
           }, issue.id);
         })
       })
@@ -4689,7 +5034,8 @@ var mapStateToProps = function mapStateToProps(state) {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, {
   setCurrentIssue: _actions_backlog__WEBPACK_IMPORTED_MODULE_2__.setCurrentIssue,
-  editSprint: _actions_sprint__WEBPACK_IMPORTED_MODULE_3__.editSprint
+  editSprint: _actions_sprint__WEBPACK_IMPORTED_MODULE_3__.editSprint,
+  updateStoryPoints: _actions_issue__WEBPACK_IMPORTED_MODULE_4__.updateStoryPoints
 })(Sprint));
 
 /***/ }),
@@ -5520,7 +5866,7 @@ var SingleProject = function SingleProject(_ref) {
       getProjectById = _ref.getProjectById;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getProjectById(params.projectKey);
-  }, [params.projectKey]);
+  }, []);
 
   if (loading) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_2__.default, {
@@ -5965,6 +6311,11 @@ var initialState = {
   var comments;
 
   switch (type) {
+    case _actions_types__WEBPACK_IMPORTED_MODULE_0__.BACKLOG_LOADING:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        loading: true
+      });
+
     case _actions_types__WEBPACK_IMPORTED_MODULE_0__.GET_BACKLOG:
       return _objectSpread(_objectSpread({}, state), {}, {
         loading: false
@@ -6138,6 +6489,11 @@ var initialState = {
       payload = action.payload;
 
   switch (type) {
+    case _actions_types__WEBPACK_IMPORTED_MODULE_0__.ISSUE_LOADING:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        loading: true
+      });
+
     case _actions_types__WEBPACK_IMPORTED_MODULE_0__.GET_ALL_ISSUES:
       return _objectSpread(_objectSpread({}, state), {}, {
         loading: false
@@ -6183,7 +6539,7 @@ var initialState = {
   switch (type) {
     case _actions_types__WEBPACK_IMPORTED_MODULE_0__.PROJECT_LOADING:
       return _objectSpread(_objectSpread({}, state), {}, {
-        loading: false
+        loading: true
       });
 
     case _actions_types__WEBPACK_IMPORTED_MODULE_0__.GET_PROJECT:

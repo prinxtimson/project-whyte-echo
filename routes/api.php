@@ -22,7 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/issues', [IssueController::class, 'index']);
+Route::get('/issues/{projectKey}', [IssueController::class, 'index']);
+Route::get('/issues/issue/{id}', [IssueController::class, 'show']);
 Route::post('/issues', [IssueController::class, 'store']);
 Route::put('/issues/{id}', [IssueController::class, 'update']);
 Route::delete('/issues/{id}', [IssueController::class, 'delIssue']);
