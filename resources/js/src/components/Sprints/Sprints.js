@@ -54,13 +54,13 @@ const Sprints = ({
 
     useEffect(() => {
         setTodoItems(
-            issues.filter((item) => item.fields.status.name === "To Do")
+            issues.filter((item) => item.fields?.status?.name === "To Do")
         );
         setInProgressItems(
-            issues.filter((item) => item.fields.status.name === "In Progress")
+            issues.filter((item) => item.fields?.status?.name === "In Progress")
         );
         setDoneItems(
-            issues.filter((item) => item.fields.status.name === "Done")
+            issues.filter((item) => item.fields?.status?.name === "Done")
         );
     }, [issues]);
 
@@ -70,7 +70,7 @@ const Sprints = ({
                 (item) => item.state === "active"
             )[0];
 
-            getSprintIssues(activeSprint.id);
+            getSprintIssues(activeSprint?.id);
         }
     }, [sprints]);
 

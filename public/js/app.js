@@ -3776,9 +3776,9 @@ var Backlog = function Backlog(_ref) {
               minHeight: 50
             },
             children: issues.map(function (item) {
-              var _item$fields$parent;
+              var _item$fields$issuetyp, _item$fields$parent;
 
-              return item.fields.issuetype.name === "Epic" || ((_item$fields$parent = item.fields.parent) === null || _item$fields$parent === void 0 ? void 0 : _item$fields$parent.fields.issuetype.name) === "Story" ? null : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Issue__WEBPACK_IMPORTED_MODULE_8__.default, {
+              return ((_item$fields$issuetyp = item.fields.issuetype) === null || _item$fields$issuetyp === void 0 ? void 0 : _item$fields$issuetyp.name) === "Epic" || ((_item$fields$parent = item.fields.parent) === null || _item$fields$parent === void 0 ? void 0 : _item$fields$parent.fields.issuetype.name) === "Story" ? null : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Issue__WEBPACK_IMPORTED_MODULE_8__.default, {
                 issue: item
               }, item.id);
             })
@@ -6092,13 +6092,19 @@ var Sprints = function Sprints(_ref) {
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     setTodoItems(issues.filter(function (item) {
-      return item.fields.status.name === "To Do";
+      var _item$fields, _item$fields$status;
+
+      return ((_item$fields = item.fields) === null || _item$fields === void 0 ? void 0 : (_item$fields$status = _item$fields.status) === null || _item$fields$status === void 0 ? void 0 : _item$fields$status.name) === "To Do";
     }));
     setInProgressItems(issues.filter(function (item) {
-      return item.fields.status.name === "In Progress";
+      var _item$fields2, _item$fields2$status;
+
+      return ((_item$fields2 = item.fields) === null || _item$fields2 === void 0 ? void 0 : (_item$fields2$status = _item$fields2.status) === null || _item$fields2$status === void 0 ? void 0 : _item$fields2$status.name) === "In Progress";
     }));
     setDoneItems(issues.filter(function (item) {
-      return item.fields.status.name === "Done";
+      var _item$fields3, _item$fields3$status;
+
+      return ((_item$fields3 = item.fields) === null || _item$fields3 === void 0 ? void 0 : (_item$fields3$status = _item$fields3.status) === null || _item$fields3$status === void 0 ? void 0 : _item$fields3$status.name) === "Done";
     }));
   }, [issues]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -6106,7 +6112,7 @@ var Sprints = function Sprints(_ref) {
       var activeSprint = sprints.filter(function (item) {
         return item.state === "active";
       })[0];
-      getSprintIssues(activeSprint.id);
+      getSprintIssues(activeSprint === null || activeSprint === void 0 ? void 0 : activeSprint.id);
     }
   }, [sprints]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_3__.default, {
@@ -6138,7 +6144,7 @@ var Sprints = function Sprints(_ref) {
                       draggableId: item.id,
                       index: index,
                       children: function children(provided, snapshot) {
-                        var _item$fields, _item$fields$parent, _item$fields$parent$f, _item$fields2;
+                        var _item$fields4, _item$fields4$parent, _item$fields4$parent$, _item$fields5;
 
                         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
                           className: "list-group-item p-2 m-2",
@@ -6146,10 +6152,10 @@ var Sprints = function Sprints(_ref) {
                         }, provided.draggableProps), provided.dragHandleProps), {}, {
                           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                             className: "py-1",
-                            children: (_item$fields = item.fields) === null || _item$fields === void 0 ? void 0 : (_item$fields$parent = _item$fields.parent) === null || _item$fields$parent === void 0 ? void 0 : (_item$fields$parent$f = _item$fields$parent.fields) === null || _item$fields$parent$f === void 0 ? void 0 : _item$fields$parent$f.summary
+                            children: (_item$fields4 = item.fields) === null || _item$fields4 === void 0 ? void 0 : (_item$fields4$parent = _item$fields4.parent) === null || _item$fields4$parent === void 0 ? void 0 : (_item$fields4$parent$ = _item$fields4$parent.fields) === null || _item$fields4$parent$ === void 0 ? void 0 : _item$fields4$parent$.summary
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
                             className: "py-1",
-                            children: (_item$fields2 = item.fields) === null || _item$fields2 === void 0 ? void 0 : _item$fields2.summary
+                            children: (_item$fields5 = item.fields) === null || _item$fields5 === void 0 ? void 0 : _item$fields5.summary
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h5", {
                             className: "fw-bold",
                             children: item.key
@@ -6186,7 +6192,7 @@ var Sprints = function Sprints(_ref) {
                       draggableId: item.id,
                       index: index,
                       children: function children(provided, snapshot) {
-                        var _item$fields3, _item$fields3$parent, _item$fields3$parent$, _item$fields4;
+                        var _item$fields6, _item$fields6$parent, _item$fields6$parent$, _item$fields7;
 
                         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
                           className: "list-group-item p-2 m-2",
@@ -6194,10 +6200,10 @@ var Sprints = function Sprints(_ref) {
                         }, provided.draggableProps), provided.dragHandleProps), {}, {
                           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                             className: "py-1",
-                            children: (_item$fields3 = item.fields) === null || _item$fields3 === void 0 ? void 0 : (_item$fields3$parent = _item$fields3.parent) === null || _item$fields3$parent === void 0 ? void 0 : (_item$fields3$parent$ = _item$fields3$parent.fields) === null || _item$fields3$parent$ === void 0 ? void 0 : _item$fields3$parent$.summary
+                            children: (_item$fields6 = item.fields) === null || _item$fields6 === void 0 ? void 0 : (_item$fields6$parent = _item$fields6.parent) === null || _item$fields6$parent === void 0 ? void 0 : (_item$fields6$parent$ = _item$fields6$parent.fields) === null || _item$fields6$parent$ === void 0 ? void 0 : _item$fields6$parent$.summary
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
                             className: "py-1",
-                            children: (_item$fields4 = item.fields) === null || _item$fields4 === void 0 ? void 0 : _item$fields4.summary
+                            children: (_item$fields7 = item.fields) === null || _item$fields7 === void 0 ? void 0 : _item$fields7.summary
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h5", {
                             className: "fw-bold",
                             children: item.key
@@ -6234,7 +6240,7 @@ var Sprints = function Sprints(_ref) {
                       draggableId: item.id,
                       index: index,
                       children: function children(provided, snapshot) {
-                        var _item$fields5, _item$fields5$parent, _item$fields5$parent$, _item$fields6;
+                        var _item$fields8, _item$fields8$parent, _item$fields8$parent$, _item$fields9;
 
                         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
                           className: "list-group-item p-2 m-2",
@@ -6242,10 +6248,10 @@ var Sprints = function Sprints(_ref) {
                         }, provided.draggableProps), provided.dragHandleProps), {}, {
                           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                             className: "py-1",
-                            children: (_item$fields5 = item.fields) === null || _item$fields5 === void 0 ? void 0 : (_item$fields5$parent = _item$fields5.parent) === null || _item$fields5$parent === void 0 ? void 0 : (_item$fields5$parent$ = _item$fields5$parent.fields) === null || _item$fields5$parent$ === void 0 ? void 0 : _item$fields5$parent$.summary
+                            children: (_item$fields8 = item.fields) === null || _item$fields8 === void 0 ? void 0 : (_item$fields8$parent = _item$fields8.parent) === null || _item$fields8$parent === void 0 ? void 0 : (_item$fields8$parent$ = _item$fields8$parent.fields) === null || _item$fields8$parent$ === void 0 ? void 0 : _item$fields8$parent$.summary
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
                             className: "py-1",
-                            children: (_item$fields6 = item.fields) === null || _item$fields6 === void 0 ? void 0 : _item$fields6.summary
+                            children: (_item$fields9 = item.fields) === null || _item$fields9 === void 0 ? void 0 : _item$fields9.summary
                           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h5", {
                             className: "fw-bold",
                             children: item.key

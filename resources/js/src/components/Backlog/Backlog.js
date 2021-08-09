@@ -74,7 +74,7 @@ const Backlog = ({ issues, issue, createSprint, sprints, project, params }) => {
                                 style={{ minHeight: 50 }}
                             >
                                 {issues.map((item) =>
-                                    item.fields.issuetype.name === "Epic" ||
+                                    item.fields.issuetype?.name === "Epic" ||
                                     item.fields.parent?.fields.issuetype
                                         .name === "Story" ? null : (
                                         <Issue issue={item} key={item.id} />
