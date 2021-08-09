@@ -36,7 +36,7 @@ const Sprints = ({
 
     useEffect(() => {
         if (issues.length > 0) {
-            getTransitions(issues[0]);
+            getTransitions(issues[0].id);
         }
     }, [issues]);
 

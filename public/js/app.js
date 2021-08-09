@@ -6051,7 +6051,7 @@ var Sprints = function Sprints(_ref) {
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (issues.length > 0) {
-      getTransitions(issues[0]);
+      getTransitions(issues[0].id);
     }
   }, [issues]);
 
