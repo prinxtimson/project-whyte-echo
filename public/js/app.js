@@ -2906,6 +2906,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "createSprint": () => (/* binding */ createSprint),
 /* harmony export */   "editSprint": () => (/* binding */ editSprint),
 /* harmony export */   "getSprintIssues": () => (/* binding */ getSprintIssues),
+/* harmony export */   "clearIssue": () => (/* binding */ clearIssue),
 /* harmony export */   "moveIssueToSprint": () => (/* binding */ moveIssueToSprint),
 /* harmony export */   "changeIssueStatus": () => (/* binding */ changeIssueStatus)
 /* harmony export */ });
@@ -3096,6 +3097,13 @@ var getSprintIssues = function getSprintIssues(id) {
     };
   }();
 };
+var clearIssue = function clearIssue() {
+  return function (dispatch) {
+    dispatch({
+      type: _types__WEBPACK_IMPORTED_MODULE_3__.CLEAR_SPRINT_ISSUES
+    });
+  };
+};
 var moveIssueToSprint = function moveIssueToSprint(issue, id) {
   return /*#__PURE__*/function () {
     var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(dispatch) {
@@ -3227,6 +3235,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "GET_BACKLOG": () => (/* binding */ GET_BACKLOG),
 /* harmony export */   "GET_BOARDS": () => (/* binding */ GET_BOARDS),
 /* harmony export */   "GET_SPRINT_ISSUES": () => (/* binding */ GET_SPRINT_ISSUES),
+/* harmony export */   "CLEAR_SPRINT_ISSUES": () => (/* binding */ CLEAR_SPRINT_ISSUES),
 /* harmony export */   "MOVE_ISSUE": () => (/* binding */ MOVE_ISSUE),
 /* harmony export */   "ADD_COMMENT": () => (/* binding */ ADD_COMMENT),
 /* harmony export */   "DEL_COMMENT": () => (/* binding */ DEL_COMMENT),
@@ -3249,6 +3258,7 @@ var CHANGE_STATUS = "CHANGE_STATUS";
 var GET_BACKLOG = "GET_BACKLOG";
 var GET_BOARDS = "GET_BOARDS";
 var GET_SPRINT_ISSUES = "GET_SPRINT_ISSUES";
+var CLEAR_SPRINT_ISSUES = "CLEAR_SPRINT_ISSUES";
 var MOVE_ISSUE = "MOVE_ISSUE";
 var ADD_COMMENT = "ADD_COMMENT";
 var DEL_COMMENT = "DEL_COMMENT";
@@ -5993,6 +6003,7 @@ var Sprints = function Sprints(_ref) {
       getSprintIssues = _ref.getSprintIssues,
       issues = _ref.issues,
       params = _ref.params,
+      clearIssue = _ref.clearIssue,
       changeIssueStatus = _ref.changeIssueStatus;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
@@ -6113,6 +6124,8 @@ var Sprints = function Sprints(_ref) {
         return item.state === "active";
       })[0];
       getSprintIssues(activeSprint === null || activeSprint === void 0 ? void 0 : activeSprint.id);
+    } else {
+      clearIssue();
     }
   }, [sprints]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_3__.default, {
@@ -6283,7 +6296,8 @@ var mapStateToProps = function mapStateToProps(state) {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_2__.connect)(mapStateToProps, {
   getSprintIssues: _actions_sprint__WEBPACK_IMPORTED_MODULE_4__.getSprintIssues,
-  changeIssueStatus: _actions_sprint__WEBPACK_IMPORTED_MODULE_4__.changeIssueStatus
+  changeIssueStatus: _actions_sprint__WEBPACK_IMPORTED_MODULE_4__.changeIssueStatus,
+  clearIssue: _actions_sprint__WEBPACK_IMPORTED_MODULE_4__.clearIssue
 })(Sprints));
 
 /***/ }),
@@ -6694,6 +6708,12 @@ var initialState = {
       return _objectSpread(_objectSpread({}, state), {}, {
         loading: false,
         sprints: [].concat(_toConsumableArray(state.sprints), [payload])
+      });
+
+    case _actions_types__WEBPACK_IMPORTED_MODULE_0__.CLEAR_SPRINT_ISSUES:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        loading: false,
+        sprints: []
       });
 
     case _actions_types__WEBPACK_IMPORTED_MODULE_0__.ON_EDIT_SPRINT:

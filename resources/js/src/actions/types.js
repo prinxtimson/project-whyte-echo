@@ -12,6 +12,7 @@ export const CHANGE_STATUS = "CHANGE_STATUS";
 export const GET_BACKLOG = "GET_BACKLOG";
 export const GET_BOARDS = "GET_BOARDS";
 export const GET_SPRINT_ISSUES = "GET_SPRINT_ISSUES";
+export const CLEAR_SPRINT_ISSUES = "CLEAR_SPRINT_ISSUES";
 export const MOVE_ISSUE = "MOVE_ISSUE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const DEL_COMMENT = "DEL_COMMENT";

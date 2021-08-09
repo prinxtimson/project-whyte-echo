@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils";
 import {
     CHANGE_STATUS,
+    CLEAR_SPRINT_ISSUES,
     GET_BOARDS,
     GET_SPRINTS,
     GET_SPRINT_ISSUES,
@@ -84,6 +85,10 @@ export const getSprintIssues = (id) => async (dispatch) => {
     } catch (err) {
         console.log(err);
     }
+};
+
+export const clearIssue = () => (dispatch) => {
+    dispatch({ type: CLEAR_SPRINT_ISSUES });
 };
 
 export const moveIssueToSprint = (issue, id) => async (dispatch) => {

@@ -1,5 +1,6 @@
 import {
     CHANGE_STATUS,
+    CLEAR_SPRINT_ISSUES,
     GET_SPRINTS,
     GET_SPRINT_ISSUES,
     MOVE_ISSUE,
@@ -35,6 +36,12 @@ export default (state = initialState, action) => {
                 ...state,
                 loading: false,
                 sprints: [...state.sprints, payload],
+            };
+        case CLEAR_SPRINT_ISSUES:
+            return {
+                ...state,
+                loading: false,
+                sprints: [],
             };
         case ON_EDIT_SPRINT:
             const index = state.sprints.findIndex(

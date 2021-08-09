@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import Container from "../Layouts/Container";
-import { getSprintIssues, changeIssueStatus } from "../../actions/sprint";
+import {
+    getSprintIssues,
+    changeIssueStatus,
+    clearIssue,
+} from "../../actions/sprint";
 import axios from "axios";
 import { BASE_URL } from "../../utils";
 
@@ -11,6 +15,7 @@ const Sprints = ({
     getSprintIssues,
     issues,
     params,
+    clearIssue,
     changeIssueStatus,
 }) => {
     const [todoItems, setTodoItems] = useState([]);
@@ -71,6 +76,8 @@ const Sprints = ({
             )[0];
 
             getSprintIssues(activeSprint?.id);
+        } else {
+            clearIssue();
         }
     }, [sprints]);
 
@@ -265,6 +272,8 @@ const mapStateToProps = (state) => ({
     issues: state.sprint.issues,
 });
 
-export default connect(mapStateToProps, { getSprintIssues, changeIssueStatus })(
-    Sprints
-);
+export default connect(mapStateToProps, {
+    getSprintIssues,
+    changeIssueStatus,
+    clearIssue,
+})(Sprints);
