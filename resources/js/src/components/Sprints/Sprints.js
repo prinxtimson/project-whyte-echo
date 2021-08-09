@@ -2,33 +2,65 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import Container from "../Layouts/Container";
-import { getSprintIssues } from "../../actions/sprint";
+import { getSprintIssues, changeIssueStatus } from "../../actions/sprint";
+import axios from "axios";
+import { BASE_URL } from "../../utils";
 
-const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
+const Sprints = ({
+    sprints,
+    getSprintIssues,
+    issues,
+    params,
+    changeIssueStatus,
+}) => {
     const [todoItems, setTodoItems] = useState([]);
     const [inProgressItems, setInProgressItems] = useState([]);
     const [doneItems, setDoneItems] = useState([]);
-    const [initialized, setInitialized] = useState(false);
+    const [transitions, setTransitions] = useState([]);
 
     const onDragEnd = async (evt) => {
-        const { source } = evt;
+        const { source, destination } = evt;
         let item = {};
-        if (source.droppableId == "todoDroppable") {
+        console.log(evt);
+        if (destination.droppableId == "todoDroppable") {
             item = todoItems[source.index];
-            item.done = true;
+            setDoneItems([item, ...todoItems]);
+        } else if (destination.droppableId == "progressDroppable") {
+            item = inProgressItems[source.index];
+            setInProgressItems([item, ...inProgressItems]);
         } else {
             item = doneItems[source.index];
-            item.done = false;
+            // setDoneItems([item, ...doneItems]);
         }
     };
 
     useEffect(() => {
-        issues.map((item) =>
-            item.fields.status.id === "10012"
-                ? setTodoItems([item, ...todoItems])
-                : item.fields.status.id === "10013"
-                ? setInProgressItems([item, ...inProgressItems])
-                : setDoneItems([item, ...doneItems])
+        if (issues.length > 0) {
+            getTransitions(issues[0]);
+        }
+    }, [issues]);
+
+    const getTransitions = async (issueId) => {
+        try {
+            const res = await axios.get(
+                `${BASE_URL}/api/issues/${issueId}/transitions`
+            );
+
+            setTransitions(res.data.transitions);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        setTodoItems(
+            issues.filter((item) => item.fields.status.name === "To Do")
+        );
+        setInProgressItems(
+            issues.filter((item) => item.fields.status.name === "In Progress")
+        );
+        setDoneItems(
+            issues.filter((item) => item.fields.status.name === "Done")
         );
     }, [issues]);
 
@@ -50,7 +82,7 @@ const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
                         <Droppable droppableId="todoDroppable">
                             {(provided, snapshot) => (
                                 <div
-                                    className="droppable card"
+                                    className="droppable card mx-3"
                                     ref={provided.innerRef}
                                     style={{
                                         minWidth: "282px",
@@ -79,15 +111,15 @@ const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
                                                         <h6 className="py-1">
                                                             {
                                                                 item.fields
-                                                                    .parent
-                                                                    .fields
-                                                                    .summary
+                                                                    ?.parent
+                                                                    ?.fields
+                                                                    ?.summary
                                                             }
                                                         </h6>
                                                         <p className="py-1">
                                                             {
                                                                 item.fields
-                                                                    .summary
+                                                                    ?.summary
                                                             }
                                                         </p>
                                                         <h5 className="fw-bold">
@@ -108,7 +140,7 @@ const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
                         <Droppable droppableId="progressDroppable">
                             {(provided, snapshot) => (
                                 <div
-                                    className="droppable card"
+                                    className="droppable card mx-3"
                                     ref={provided.innerRef}
                                     style={{
                                         minWidth: "282px",
@@ -137,15 +169,15 @@ const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
                                                         <h6 className="py-1">
                                                             {
                                                                 item.fields
-                                                                    .parent
-                                                                    .fields
-                                                                    .summary
+                                                                    ?.parent
+                                                                    ?.fields
+                                                                    ?.summary
                                                             }
                                                         </h6>
                                                         <p className="py-1">
                                                             {
                                                                 item.fields
-                                                                    .summary
+                                                                    ?.summary
                                                             }
                                                         </p>
                                                         <h5 className="fw-bold">
@@ -166,7 +198,7 @@ const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
                         <Droppable droppableId="doneDroppable">
                             {(provided, snapshot) => (
                                 <div
-                                    className="droppable card"
+                                    className="droppable card  mx-3"
                                     ref={provided.innerRef}
                                     style={{
                                         minWidth: "282px",
@@ -195,15 +227,15 @@ const Sprints = ({ sprints, getSprintIssues, issues, params }) => {
                                                         <h6 className="py-1">
                                                             {
                                                                 item.fields
-                                                                    .parent
-                                                                    .fields
-                                                                    .summary
+                                                                    ?.parent
+                                                                    ?.fields
+                                                                    ?.summary
                                                             }
                                                         </h6>
                                                         <p className="py-1">
                                                             {
                                                                 item.fields
-                                                                    .summary
+                                                                    ?.summary
                                                             }
                                                         </p>
                                                         <h5 className="fw-bold">
@@ -233,4 +265,6 @@ const mapStateToProps = (state) => ({
     issues: state.sprint.issues,
 });
 
-export default connect(mapStateToProps, { getSprintIssues })(Sprints);
+export default connect(mapStateToProps, { getSprintIssues, changeIssueStatus })(
+    Sprints
+);

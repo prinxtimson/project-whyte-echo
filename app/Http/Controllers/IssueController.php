@@ -78,6 +78,17 @@ class IssueController extends Controller
         return $response->throw()->json();
     }
 
+    public function getTransitions(Request $request, $id)
+    {
+        //
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->withHeaders([
+            "Content-Type" => "application/json",
+            "Accept" => 'application/json'
+        ])->get('https://tricomms.atlassian.net/rest/api/3/issue/'.$id.'/transitions');
+
+        return $response->throw()->json();
+    }
+
     public function story_points(Request $request, $id, $boardId)
     {
         //

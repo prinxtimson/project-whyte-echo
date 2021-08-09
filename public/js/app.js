@@ -2907,7 +2907,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "editSprint": () => (/* binding */ editSprint),
 /* harmony export */   "getSprintIssues": () => (/* binding */ getSprintIssues),
 /* harmony export */   "moveIssueToSprint": () => (/* binding */ moveIssueToSprint),
-/* harmony export */   "changeStatus": () => (/* binding */ changeStatus)
+/* harmony export */   "changeIssueStatus": () => (/* binding */ changeIssueStatus)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -3145,7 +3145,7 @@ var moveIssueToSprint = function moveIssueToSprint(issue, id) {
     };
   }();
 };
-var changeStatus = function changeStatus(data, id) {
+var changeIssueStatus = function changeIssueStatus(issueId, statusId) {
   return /*#__PURE__*/function () {
     var _ref6 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(dispatch) {
       var config, body, res, errorMessages;
@@ -3158,10 +3158,14 @@ var changeStatus = function changeStatus(data, id) {
                   "Content-Type": "application/json"
                 }
               };
-              body = JSON.stringify(data);
+              body = JSON.stringify({
+                transition: {
+                  id: statusId
+                }
+              });
               _context6.prev = 2;
               _context6.next = 5;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().post("".concat(_utils__WEBPACK_IMPORTED_MODULE_2__.BASE_URL, "/api/sprint/").concat(id, "/issue"), body, config);
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().post("".concat(_utils__WEBPACK_IMPORTED_MODULE_2__.BASE_URL, "/api/issues/").concat(issueId, "/transitions"), body, config);
 
             case 5:
               res = _context6.sent;
@@ -4871,7 +4875,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Sprint = function Sprint(_ref) {
-  var _sprint$issues;
+  var _sprint$issues, _sprint$issues2;
 
   var sprint = _ref.sprint,
       sprints = _ref.sprints,
@@ -4936,7 +4940,7 @@ var Sprint = function Sprint(_ref) {
           },
           disabled: nextSprint !== sprint.id || sprints.find(function (item) {
             return item.state === "active";
-          }) || sprint.issues.length === 0,
+          }) || ((_sprint$issues = sprint.issues) === null || _sprint$issues === void 0 ? void 0 : _sprint$issues.length) === 0,
           children: "Start Sprint"
         })
       })]
@@ -4944,8 +4948,8 @@ var Sprint = function Sprint(_ref) {
       className: "card-body",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "list-group",
-        children: (_sprint$issues = sprint.issues) === null || _sprint$issues === void 0 ? void 0 : _sprint$issues.map(function (issue, index) {
-          var _issue$fields$parent, _issue$fields$status;
+        children: (_sprint$issues2 = sprint.issues) === null || _sprint$issues2 === void 0 ? void 0 : _sprint$issues2.map(function (issue, index) {
+          var _issue$fields$parent, _issue$fields$parent$, _issue$fields, _issue$fields$status;
 
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
             className: "d-flex p-1 list-group-item list-group-item-action ".concat(index % 2 === 0 && "list-group-item-primary"),
@@ -4968,7 +4972,7 @@ var Sprint = function Sprint(_ref) {
                     children: issue.fields.summary
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
                     className: "p-1 flex-shrink-0 text-primary font-weight-bold",
-                    children: (_issue$fields$parent = issue.fields.parent) === null || _issue$fields$parent === void 0 ? void 0 : _issue$fields$parent.fields.summary
+                    children: (_issue$fields$parent = issue.fields.parent) === null || _issue$fields$parent === void 0 ? void 0 : (_issue$fields$parent$ = _issue$fields$parent.fields) === null || _issue$fields$parent$ === void 0 ? void 0 : _issue$fields$parent$.summary
                   })]
                 })]
               })
@@ -5011,7 +5015,7 @@ var Sprint = function Sprint(_ref) {
                 return handleEditStoryPointsClick(issue);
               },
               className: "btn btn-light btn-sm",
-              children: issue.fields.customfield_10016
+              children: (_issue$fields = issue.fields) === null || _issue$fields === void 0 ? void 0 : _issue$fields.customfield_10016
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
               className: "p-1 flex-shrink-0",
               children: (_issue$fields$status = issue.fields.status) === null || _issue$fields$status === void 0 ? void 0 : _issue$fields$status.name
@@ -5934,16 +5938,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
+/* harmony import */ var react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _Layouts_Container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Layouts/Container */ "./resources/js/src/components/Layouts/Container.js");
 /* harmony import */ var _actions_sprint__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/sprint */ "./resources/js/src/actions/sprint.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils */ "./resources/js/src/utils.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -5952,8 +5961,6 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -5979,11 +5986,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 var Sprints = function Sprints(_ref) {
   var sprints = _ref.sprints,
       getSprintIssues = _ref.getSprintIssues,
       issues = _ref.issues,
-      params = _ref.params;
+      params = _ref.params,
+      changeIssueStatus = _ref.changeIssueStatus;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
@@ -6000,30 +6010,33 @@ var Sprints = function Sprints(_ref) {
       doneItems = _useState6[0],
       setDoneItems = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState8 = _slicedToArray(_useState7, 2),
-      initialized = _useState8[0],
-      setInitialized = _useState8[1];
+      transitions = _useState8[0],
+      setTransitions = _useState8[1];
 
   var onDragEnd = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(evt) {
-      var source, item;
+      var source, destination, item;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              source = evt.source;
+              source = evt.source, destination = evt.destination;
               item = {};
+              console.log(evt);
 
-              if (source.droppableId == "todoDroppable") {
+              if (destination.droppableId == "todoDroppable") {
                 item = todoItems[source.index];
-                item.done = true;
+                setDoneItems([item].concat(_toConsumableArray(todoItems)));
+              } else if (destination.droppableId == "progressDroppable") {
+                item = inProgressItems[source.index];
+                setInProgressItems([item].concat(_toConsumableArray(inProgressItems)));
               } else {
-                item = doneItems[source.index];
-                item.done = false;
+                item = doneItems[source.index]; // setDoneItems([item, ...doneItems]);
               }
 
-            case 3:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -6037,9 +6050,56 @@ var Sprints = function Sprints(_ref) {
   }();
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    issues.map(function (item) {
-      return item.fields.status.id === "10012" ? setTodoItems([item].concat(_toConsumableArray(todoItems))) : item.fields.status.id === "10013" ? setInProgressItems([item].concat(_toConsumableArray(inProgressItems))) : setDoneItems([item].concat(_toConsumableArray(doneItems)));
-    });
+    if (issues.length > 0) {
+      getTransitions(issues[0]);
+    }
+  }, [issues]);
+
+  var getTransitions = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(issueId) {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.prev = 0;
+              _context2.next = 3;
+              return axios__WEBPACK_IMPORTED_MODULE_5___default().get("".concat(_utils__WEBPACK_IMPORTED_MODULE_6__.BASE_URL, "/api/issues/").concat(issueId, "/transitions"));
+
+            case 3:
+              res = _context2.sent;
+              setTransitions(res.data.transitions);
+              _context2.next = 10;
+              break;
+
+            case 7:
+              _context2.prev = 7;
+              _context2.t0 = _context2["catch"](0);
+              console.log(_context2.t0);
+
+            case 10:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, null, [[0, 7]]);
+    }));
+
+    return function getTransitions(_x2) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    setTodoItems(issues.filter(function (item) {
+      return item.fields.status.name === "To Do";
+    }));
+    setInProgressItems(issues.filter(function (item) {
+      return item.fields.status.name === "In Progress";
+    }));
+    setDoneItems(issues.filter(function (item) {
+      return item.fields.status.name === "Done";
+    }));
   }, [issues]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (sprints.length > 0) {
@@ -6049,50 +6109,52 @@ var Sprints = function Sprints(_ref) {
       getSprintIssues(activeSprint.id);
     }
   }, [sprints]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_3__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_3__.default, {
     params: params,
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
       className: "container p-3",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
         className: "d-flex gap-3 overflow-auto",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__.DragDropContext, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__.DragDropContext, {
           onDragEnd: onDragEnd,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__.Droppable, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__.Droppable, {
             droppableId: "todoDroppable",
             children: function children(provided, snapshot) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                className: "droppable card",
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                className: "droppable card mx-3",
                 ref: provided.innerRef,
                 style: {
                   minWidth: "282px",
                   maxWidth: "282px",
                   minHeight: "70vh"
                 },
-                children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                   className: "text-primary m-2 fw-bold",
                   children: "TO DO"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                   className: "list-group",
                   children: todoItems.map(function (item, index) {
-                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__.Draggable, {
+                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__.Draggable, {
                       draggableId: item.id,
                       index: index,
                       children: function children(provided, snapshot) {
-                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
+                        var _item$fields, _item$fields$parent, _item$fields$parent$f, _item$fields2;
+
+                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
                           className: "list-group-item p-2 m-2",
                           ref: provided.innerRef
                         }, provided.draggableProps), provided.dragHandleProps), {}, {
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                             className: "py-1",
-                            children: item.fields.parent.fields.summary
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                            children: (_item$fields = item.fields) === null || _item$fields === void 0 ? void 0 : (_item$fields$parent = _item$fields.parent) === null || _item$fields$parent === void 0 ? void 0 : (_item$fields$parent$f = _item$fields$parent.fields) === null || _item$fields$parent$f === void 0 ? void 0 : _item$fields$parent$f.summary
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
                             className: "py-1",
-                            children: item.fields.summary
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                            children: (_item$fields2 = item.fields) === null || _item$fields2 === void 0 ? void 0 : _item$fields2.summary
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h5", {
                             className: "fw-bold",
                             children: item.key
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
                               className: "fa fa-close"
                             })
                           })]
@@ -6103,42 +6165,44 @@ var Sprints = function Sprints(_ref) {
                 }), provided.placeholder]
               });
             }
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__.Droppable, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__.Droppable, {
             droppableId: "progressDroppable",
             children: function children(provided, snapshot) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                className: "droppable card",
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                className: "droppable card mx-3",
                 ref: provided.innerRef,
                 style: {
                   minWidth: "282px",
                   maxWidth: "282px",
                   minHeight: "70vh"
                 },
-                children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                   className: "text-warning m-2 fw-bold",
                   children: "IN PROGRESS"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                   className: "list-group",
                   children: inProgressItems.map(function (item, index) {
-                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__.Draggable, {
+                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__.Draggable, {
                       draggableId: item.id,
                       index: index,
                       children: function children(provided, snapshot) {
-                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
+                        var _item$fields3, _item$fields3$parent, _item$fields3$parent$, _item$fields4;
+
+                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
                           className: "list-group-item p-2 m-2",
                           ref: provided.innerRef
                         }, provided.draggableProps), provided.dragHandleProps), {}, {
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                             className: "py-1",
-                            children: item.fields.parent.fields.summary
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                            children: (_item$fields3 = item.fields) === null || _item$fields3 === void 0 ? void 0 : (_item$fields3$parent = _item$fields3.parent) === null || _item$fields3$parent === void 0 ? void 0 : (_item$fields3$parent$ = _item$fields3$parent.fields) === null || _item$fields3$parent$ === void 0 ? void 0 : _item$fields3$parent$.summary
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
                             className: "py-1",
-                            children: item.fields.summary
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                            children: (_item$fields4 = item.fields) === null || _item$fields4 === void 0 ? void 0 : _item$fields4.summary
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h5", {
                             className: "fw-bold",
                             children: item.key
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
                               className: "fa fa-close"
                             })
                           })]
@@ -6149,42 +6213,44 @@ var Sprints = function Sprints(_ref) {
                 }), provided.placeholder]
               });
             }
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__.Droppable, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__.Droppable, {
             droppableId: "doneDroppable",
             children: function children(provided, snapshot) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                className: "droppable card",
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                className: "droppable card  mx-3",
                 ref: provided.innerRef,
                 style: {
                   minWidth: "282px",
                   maxWidth: "282px",
                   minHeight: "70vh"
                 },
-                children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                children: ["\xA0", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                   className: "text-success m-2 fw-bold",
                   children: "DONE"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                   className: "list-group",
                   children: doneItems.map(function (item, index) {
-                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_6__.Draggable, {
+                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_8__.Draggable, {
                       draggableId: item.id,
                       index: index,
                       children: function children(provided, snapshot) {
-                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
+                        var _item$fields5, _item$fields5$parent, _item$fields5$parent$, _item$fields6;
+
+                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", _objectSpread(_objectSpread(_objectSpread({
                           className: "list-group-item p-2 m-2",
                           ref: provided.innerRef
                         }, provided.draggableProps), provided.dragHandleProps), {}, {
-                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h6", {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h6", {
                             className: "py-1",
-                            children: item.fields.parent.fields.summary
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                            children: (_item$fields5 = item.fields) === null || _item$fields5 === void 0 ? void 0 : (_item$fields5$parent = _item$fields5.parent) === null || _item$fields5$parent === void 0 ? void 0 : (_item$fields5$parent$ = _item$fields5$parent.fields) === null || _item$fields5$parent$ === void 0 ? void 0 : _item$fields5$parent$.summary
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
                             className: "py-1",
-                            children: item.fields.summary
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h5", {
+                            children: (_item$fields6 = item.fields) === null || _item$fields6 === void 0 ? void 0 : _item$fields6.summary
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h5", {
                             className: "fw-bold",
                             children: item.key
-                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
+                            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
                               className: "fa fa-close"
                             })
                           })]
@@ -6210,7 +6276,8 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_2__.connect)(mapStateToProps, {
-  getSprintIssues: _actions_sprint__WEBPACK_IMPORTED_MODULE_4__.getSprintIssues
+  getSprintIssues: _actions_sprint__WEBPACK_IMPORTED_MODULE_4__.getSprintIssues,
+  changeIssueStatus: _actions_sprint__WEBPACK_IMPORTED_MODULE_4__.changeIssueStatus
 })(Sprints));
 
 /***/ }),

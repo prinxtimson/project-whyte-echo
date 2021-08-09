@@ -64,7 +64,7 @@ const Sprint = ({
                                 sprints.find(
                                     (item) => item.state === "active"
                                 ) ||
-                                sprint.issues.length === 0
+                                sprint.issues?.length === 0
                             }
                         >
                             Start Sprint
@@ -96,7 +96,7 @@ const Sprint = ({
                                         <h5 className="p-1 flex-shrink-0 text-primary font-weight-bold">
                                             {
                                                 issue.fields.parent?.fields
-                                                    .summary
+                                                    ?.summary
                                             }
                                         </h5>
                                     </div>
@@ -141,7 +141,7 @@ const Sprint = ({
                                     }
                                     className="btn btn-light btn-sm"
                                 >
-                                    {issue.fields.customfield_10016}
+                                    {issue.fields?.customfield_10016}
                                 </button>
                             )}
                             <h5 className="p-1 flex-shrink-0">

@@ -109,18 +109,22 @@ export const moveIssueToSprint = (issue, id) => async (dispatch) => {
     }
 };
 
-export const changeStatus = (data, id) => async (dispatch) => {
+export const changeIssueStatus = (issueId, statusId) => async (dispatch) => {
     const config = {
         headers: {
             "Content-Type": "application/json",
         },
     };
 
-    const body = JSON.stringify(data);
+    const body = JSON.stringify({
+        transition: {
+            id: statusId,
+        },
+    });
 
     try {
         const res = await axios.post(
-            `${BASE_URL}/api/sprint/${id}/issue`,
+            `${BASE_URL}/api/issues/${issueId}/transitions`,
             body,
             config
         );
