@@ -5864,7 +5864,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Backlog_Backlog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Backlog/Backlog */ "./resources/js/src/components/Backlog/Backlog.js");
 /* harmony import */ var _Sprints_Sprints__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Sprints/Sprints */ "./resources/js/src/components/Sprints/Sprints.js");
 /* harmony import */ var _actions_project__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../actions/project */ "./resources/js/src/actions/project.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _actions_sprint__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../actions/sprint */ "./resources/js/src/actions/sprint.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -5877,24 +5879,26 @@ __webpack_require__.r(__webpack_exports__);
 var SingleProject = function SingleProject(_ref) {
   var params = _ref.match.params,
       loading = _ref.project.loading,
-      getProjectById = _ref.getProjectById;
+      getProjectById = _ref.getProjectById,
+      clearIssue = _ref.clearIssue;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getProjectById(params.projectKey);
+    clearIssue();
   }, []);
 
   if (loading) {
-    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_2__.default, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Layouts_Container__WEBPACK_IMPORTED_MODULE_2__.default, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
         className: "container p-5",
         style: {
           minHeight: "89vh"
         },
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
           className: "d-flex justify-content-center",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
             className: "spinner-border",
             role: "status",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
               className: "sr-only",
               children: "Loading..."
             })
@@ -5906,17 +5910,17 @@ var SingleProject = function SingleProject(_ref) {
 
   switch (params.pathName) {
     case "backlog":
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Backlog_Backlog__WEBPACK_IMPORTED_MODULE_4__.default, {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Backlog_Backlog__WEBPACK_IMPORTED_MODULE_4__.default, {
         params: params
       });
 
     case "active-sprint":
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Sprints_Sprints__WEBPACK_IMPORTED_MODULE_5__.default, {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Sprints_Sprints__WEBPACK_IMPORTED_MODULE_5__.default, {
         params: params
       });
 
     default:
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Issues_Issues__WEBPACK_IMPORTED_MODULE_3__.default, {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Issues_Issues__WEBPACK_IMPORTED_MODULE_3__.default, {
         params: params
       });
   }
@@ -5929,7 +5933,8 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, {
-  getProjectById: _actions_project__WEBPACK_IMPORTED_MODULE_6__.getProjectById
+  getProjectById: _actions_project__WEBPACK_IMPORTED_MODULE_6__.getProjectById,
+  clearIssue: _actions_sprint__WEBPACK_IMPORTED_MODULE_7__.clearIssue
 })(SingleProject));
 
 /***/ }),

@@ -5,14 +5,17 @@ import Issues from "../Issues/Issues";
 import Backlog from "../Backlog/Backlog";
 import Sprints from "../Sprints/Sprints";
 import { getProjectById } from "../../actions/project";
+import { clearIssue } from "../../actions/sprint";
 
 const SingleProject = ({
     match: { params },
     project: { loading },
     getProjectById,
+    clearIssue,
 }) => {
     useEffect(() => {
         getProjectById(params.projectKey);
+        clearIssue();
     }, []);
 
     if (loading) {
@@ -43,4 +46,6 @@ const mapStateToProps = (state) => ({
     project: state.project,
 });
 
-export default connect(mapStateToProps, { getProjectById })(SingleProject);
+export default connect(mapStateToProps, { getProjectById, clearIssue })(
+    SingleProject
+);
