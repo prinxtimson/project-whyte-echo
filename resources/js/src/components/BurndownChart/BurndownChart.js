@@ -160,7 +160,7 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {burndown?.changes?.map((item) => (
+                                {burndown?.sprints?.map((item) => (
                                     <tr key={item.id}>
                                         <td>{item.name}</td>
                                         <td>
