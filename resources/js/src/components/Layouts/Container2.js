@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Container2 = ({ children }) => {
     return (
-        <Fragment>
+        <div className="mh-100" style={{ maxHeight: "100vh" }}>
             <nav
                 className="navbar p-3 navbar-dark"
                 style={{ backgroundColor: "#293986" }}
@@ -93,7 +93,7 @@ const Container2 = ({ children }) => {
             <div className="container-fluid">
                 <main className="ms-auto">{children}</main>
             </div>
-        </Fragment>
+        </div>
     );
 };
 

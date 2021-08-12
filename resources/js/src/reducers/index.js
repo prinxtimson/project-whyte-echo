@@ -5,6 +5,7 @@ import alert from "./alert";
 import board from "./board";
 import sprint from "./sprint";
 import backlog from "./backlog";
+import report from "./report";
 
 export default combineReducers({
     issue,
@@ -13,4 +14,5 @@ export default combineReducers({
     board,
     sprint,
     backlog,
+    report,
 });

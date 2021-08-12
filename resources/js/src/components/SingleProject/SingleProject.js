@@ -6,6 +6,8 @@ import Backlog from "../Backlog/Backlog";
 import Sprints from "../Sprints/Sprints";
 import { getProjectById } from "../../actions/project";
 import { clearIssue } from "../../actions/sprint";
+import VelocityReport from "../VelocityReport/VelocityReport";
+import BurndownChart from "../BurndownChart/BurndownChart";
 
 const SingleProject = ({
     match: { params },
@@ -16,7 +18,7 @@ const SingleProject = ({
     useEffect(() => {
         getProjectById(params.projectKey);
         clearIssue();
-    }, []);
+    }, [params.projectKey]);
 
     if (loading) {
         return (
@@ -37,6 +39,10 @@ const SingleProject = ({
             return <Backlog params={params} />;
         case "active-sprint":
             return <Sprints params={params} />;
+        case "velocity-chart":
+            return <VelocityReport params={params} />;
+        case "burndown-chart":
+            return <BurndownChart params={params} />;
         default:
             return <Issues params={params} />;
     }

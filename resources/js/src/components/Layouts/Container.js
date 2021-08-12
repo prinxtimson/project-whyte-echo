@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Container = ({ children, params }) => {
     return (
-        <Fragment>
+        <div className="mh-100" style={{ maxHeight: "100vh" }}>
             <header
                 className="navbar p-3 navbar-dark"
                 style={{ backgroundColor: "#293986" }}
@@ -126,6 +126,24 @@ const Container = ({ children, params }) => {
                                         Active Sprint
                                     </Link>
                                 </li>
+                                <li className="nav-item">
+                                    <Link
+                                        className="nav-link text-light"
+                                        to={`/projects/${params?.projectKey}/burndown-chart`}
+                                        replace
+                                    >
+                                        Burndown
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link
+                                        className="nav-link text-light"
+                                        to={`/projects/${params?.projectKey}/velocity-chart`}
+                                        replace
+                                    >
+                                        Velocity Chart
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
                     </nav>
@@ -137,7 +155,7 @@ const Container = ({ children, params }) => {
                     </main>
                 </div>
             </div>
-        </Fragment>
+        </div>
     );
 };
 

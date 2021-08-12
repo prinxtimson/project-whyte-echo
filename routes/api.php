@@ -6,6 +6,7 @@ use App\Http\Controllers\IssueController;
 use App\Http\Controllers\SprintController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,10 @@ Route::put('/issues/story_points/{id}/{boardId}', [IssueController::class, 'stor
 Route::get('/projects', [ProjectController::class, 'index']);
 Route::get('/projects/{id}', [ProjectController::class, 'show']);
 Route::post('/projects/user', [ProjectController::class, 'store']);
+
+Route::get('/report/velocity', [ReportController::class, 'velocity']);
+Route::get('/report/burnup', [ReportController::class, 'burnup']);
+Route::get('/report/burndown', [ReportController::class, 'burndown']);
 
 Route::get('/sprint', [SprintController::class, 'index']);
 Route::post('/sprint', [SprintController::class, 'store']);

@@ -59,7 +59,7 @@ const Admin = ({ createChannel, alerts }) => {
                         <input
                             type="text"
                             className="form-control form-control-lg"
-                            placeholder="Summary"
+                            placeholder="Channel Email"
                             name="channelEmail"
                             onChange={handleOnChange}
                             id="floatingInput"
