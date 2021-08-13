@@ -6,12 +6,14 @@ import {
     getSprintIssues,
     changeIssueStatus,
     clearIssue,
+    getSprints,
 } from "../../actions/sprint";
 import axios from "axios";
 import { BASE_URL } from "../../utils";
 
 const Sprints = ({
     sprints,
+    getSprints,
     getSprintIssues,
     issues,
     params,
@@ -22,21 +24,64 @@ const Sprints = ({
     const [inProgressItems, setInProgressItems] = useState([]);
     const [doneItems, setDoneItems] = useState([]);
     const [transitions, setTransitions] = useState([]);
+    const [activeSprint, setActiveSprint] = useState(null);
 
     const onDragEnd = async (evt) => {
         const { source, destination } = evt;
         let item = {};
-        console.log(evt);
-        if (destination.droppableId == "todoDroppable") {
-            item = todoItems[source.index];
-            setDoneItems([item, ...todoItems]);
-        } else if (destination.droppableId == "progressDroppable") {
-            item = inProgressItems[source.index];
-            setInProgressItems([item, ...inProgressItems]);
+        let statusId;
+        if (destination.droppableId === "todoDroppable") {
+            statusId = transitions.find((item) => item.name === "To Do").id;
+            if (source.droppableId === "progressDroppable") {
+                item = inProgressItems[source.index];
+                inProgressItems.splice(source.index, 1);
+                setInProgressItems(inProgressItems);
+                todoItems.splice(destination.index, 0, item);
+                setTodoItems(todoItems);
+            } else {
+                item = doneItems[source.index];
+                doneItems.splice(source.index, 1);
+                setDoneItems(doneItems);
+                todoItems.splice(destination.index, 0, item);
+                setTodoItems(todoItems);
+            }
+            //setDoneItems([item, ...todoItems]);
+        } else if (destination.droppableId === "progressDroppable") {
+            statusId = transitions.find(
+                (item) => item.name === "In Progress"
+            ).id;
+            if (source.droppableId === "todoDroppable") {
+                item = todoItems[source.index];
+                todoItems.splice(source.index, 1);
+                setTodoItems(todoItems);
+                inProgressItems.splice(destination.index, 0, item);
+                setInProgressItems(inProgressItems);
+            } else {
+                item = doneItems[source.index];
+                doneItems.splice(source.index, 1);
+                setDoneItems(doneItems);
+                inProgressItems.splice(destination.index, 0, item);
+                setInProgressItems(inProgressItems);
+            }
+            //setInProgressItems([item, ...inProgressItems]);
         } else {
-            item = doneItems[source.index];
+            statusId = transitions.find((item) => item.name === "Done").id;
+            if (source.droppableId === "todoDroppable") {
+                item = todoItems[source.index];
+                todoItems.splice(source.index, 1);
+                setTodoItems(todoItems);
+                doneItems.splice(destination.index, 0, item);
+                setDoneItems(doneItems);
+            } else {
+                item = inProgressItems[source.index];
+                inProgressItems.splice(source.index, 1);
+                setInProgressItems(inProgressItems);
+                doneItems.splice(destination.index, 0, item);
+                setDoneItems(doneItems);
+            }
             // setDoneItems([item, ...doneItems]);
         }
+        await changeIssueStatus(item.key, statusId);
     };
 
     useEffect(() => {
@@ -71,11 +116,11 @@ const Sprints = ({
 
     useEffect(() => {
         if (sprints.length > 0) {
-            const activeSprint = sprints.filter(
-                (item) => item.state === "active"
-            )[0];
+            let sprint = sprints.filter((item) => item.state === "active")[0];
 
-            getSprintIssues(activeSprint?.id);
+            setActiveSprint(sprint);
+
+            getSprintIssues(sprint?.id);
         } else {
             clearIssue();
         }
@@ -89,12 +134,13 @@ const Sprints = ({
                         <Droppable droppableId="todoDroppable">
                             {(provided, snapshot) => (
                                 <div
-                                    className="droppable card mx-3"
+                                    className="droppable mx-2 rounded"
                                     ref={provided.innerRef}
                                     style={{
                                         minWidth: "282px",
                                         maxWidth: "282px",
                                         minHeight: "70vh",
+                                        backgroundColor: "#f5f5f5",
                                     }}
                                 >
                                     &nbsp;
@@ -147,12 +193,13 @@ const Sprints = ({
                         <Droppable droppableId="progressDroppable">
                             {(provided, snapshot) => (
                                 <div
-                                    className="droppable card mx-3"
+                                    className="droppable rounded mx-2"
                                     ref={provided.innerRef}
                                     style={{
                                         minWidth: "282px",
                                         maxWidth: "282px",
                                         minHeight: "70vh",
+                                        backgroundColor: "#f5f5f5",
                                     }}
                                 >
                                     &nbsp;
@@ -205,12 +252,13 @@ const Sprints = ({
                         <Droppable droppableId="doneDroppable">
                             {(provided, snapshot) => (
                                 <div
-                                    className="droppable card  mx-3"
+                                    className="droppable rounded mx-2"
                                     ref={provided.innerRef}
                                     style={{
                                         minWidth: "282px",
                                         maxWidth: "282px",
                                         minHeight: "70vh",
+                                        backgroundColor: "#f5f5f5",
                                     }}
                                 >
                                     &nbsp;
@@ -276,4 +324,5 @@ export default connect(mapStateToProps, {
     getSprintIssues,
     changeIssueStatus,
     clearIssue,
+    getSprints,
 })(Sprints);

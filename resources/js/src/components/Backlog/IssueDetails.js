@@ -27,6 +27,7 @@ const IssueDetails = ({
     const handleUploadFile = (selectedFile, id) => {
         const file = new FormData();
         file.append("file", selectedFile);
+        console.log(selectedFile);
         attachFile(file, id);
     };
 
@@ -161,7 +162,7 @@ const IssueDetails = ({
                             name="file"
                             id="file"
                             onChange={(e) =>
-                                handleUploadFile(e.target.files[0], issue?.id)
+                                handleUploadFile(e.target.files[0], issue?.key)
                             }
                             className="d-none"
                         />

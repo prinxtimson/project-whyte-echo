@@ -8,6 +8,7 @@ import { getProjectById } from "../../actions/project";
 import { clearIssue } from "../../actions/sprint";
 import VelocityReport from "../VelocityReport/VelocityReport";
 import BurndownChart from "../BurndownChart/BurndownChart";
+import BurnupChart from "../BurnupChart/BurnupChart";
 
 const SingleProject = ({
     match: { params },
@@ -43,6 +44,8 @@ const SingleProject = ({
             return <VelocityReport params={params} />;
         case "burndown-chart":
             return <BurndownChart params={params} />;
+        case "burnup-chart":
+            return <BurnupChart params={params} />;
         default:
             return <Issues params={params} />;
     }

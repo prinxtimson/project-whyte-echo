@@ -4,10 +4,12 @@ import * as htmlToImage from "html-to-image";
 import download from "downloadjs";
 import { Line } from "react-chartjs-2";
 import { connect } from "react-redux";
+import moment from "moment";
 import { getBurndown } from "../../actions/report";
 
 const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
     const [state, setState] = useState({});
+    const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
         getBurndown();
@@ -24,6 +26,7 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
     useEffect(() => {
         let dates = [];
         let data = [];
+        let sortable = [];
         let totalStoryPoints = 0;
         let remaining;
         let storyPoints = {};
@@ -31,19 +34,29 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
         let endDate = new Date(burndown.endTime);
         let completeDate = new Date(burndown.completeTime);
         while (currentDate <= completeDate) {
-            dates.push(currentDate.toDateString());
+            dates.push(moment(currentDate).format("ll"));
             currentDate.setDate(currentDate.getDate() + 1);
         }
         if (burndown?.changes) {
             for (let [key, value] of Object.entries(burndown?.changes)) {
                 value.map((item) => {
-                    if (item.statC?.newValue) {
-                        totalStoryPoints =
-                            totalStoryPoints + item.statC.newValue;
+                    if (item.statC) {
+                        let p = item.statC.newValue || 0;
+                        totalStoryPoints = totalStoryPoints + p;
                         storyPoints[item.key] = item.statC.newValue || 0;
                     }
                 });
             }
+
+            for (let issue in storyPoints) {
+                sortable.push([issue, storyPoints[issue]]);
+            }
+
+            sortable.sort(function (a, b) {
+                return a[1] - b[1];
+            });
+            setTableData(sortable);
+
             remaining = totalStoryPoints;
             for (let [key, value] of Object.entries(burndown?.changes)) {
                 value.map((item) => {
@@ -54,7 +67,7 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
                         remaining = remaining - point;
                         data.push({
                             key: item.key,
-                            x: d.toDateString(),
+                            x: moment(d).format("ll"),
                             storyPoints: point,
                             y: remaining,
                         });
@@ -75,7 +88,7 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
                         data: [
                             {
                                 y: totalStoryPoints,
-                                x: new Date(burndown.startTime).toDateString(),
+                                x: moment(burndown.startTime).format("ll"),
                             },
                             ...data,
                         ],
@@ -90,9 +103,9 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
                         data: [
                             {
                                 y: totalStoryPoints,
-                                x: new Date(burndown.startTime).toDateString(),
+                                x: moment(burndown.startTime).format("ll"),
                             },
-                            { y: 0, x: endDate.toDateString() },
+                            { y: 0, x: moment(endDate).format("ll") },
                         ],
                     },
                 ],
@@ -113,8 +126,6 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
             </Container>
         );
     }
-
-    console.log(state);
 
     return (
         <Container params={params}>
@@ -160,23 +171,20 @@ const BurndownChart = ({ loading, burndown, getBurndown, sprints, params }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {burndown?.sprints?.map((item) => (
-                                    <tr key={item.id}>
-                                        <td>{item.name}</td>
+                                {tableData.map((item, index) => (
+                                    <tr key={item[0]}>
                                         <td>
-                                            {
-                                                velocity?.velocityStatEntries[
-                                                    item.id
-                                                ]?.estimated?.value
-                                            }
+                                            {index === 0 &&
+                                                moment(
+                                                    burndown?.startTime
+                                                ).format("L")}
                                         </td>
-                                        <td>
-                                            {
-                                                velocity?.velocityStatEntries[
-                                                    item.id
-                                                ]?.completed?.value
-                                            }
-                                        </td>
+                                        <td>{item[0]}</td>
+                                        <td>{index === 0 && "Sprint start"}</td>
+                                        <td></td>
+                                        <td>{item[1]}</td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 ))}
                             </tbody>

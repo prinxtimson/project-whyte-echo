@@ -129,6 +129,15 @@ const Container = ({ children, params }) => {
                                 <li className="nav-item">
                                     <Link
                                         className="nav-link text-light"
+                                        to={`/projects/${params?.projectKey}/burnup-chart`}
+                                        replace
+                                    >
+                                        Burnup
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link
+                                        className="nav-link text-light"
                                         to={`/projects/${params?.projectKey}/burndown-chart`}
                                         replace
                                     >

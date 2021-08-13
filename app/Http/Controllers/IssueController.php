@@ -105,21 +105,25 @@ class IssueController extends Controller
     public function attachments(Request $request, $id)
     {
         //
-        $file = $request->file->store('file');
-        $filename =$request->file('file')->getClientOriginalName();
+        // $file = $request->file->store('file');
+        // $filename =$request->file('file')->getClientOriginalName();
 
-        $path = Storage::path(basename($file));
+        // $path = Storage::path(basename($file));
 
-        $parameters = array(
-            'file' => File::get(basename($file))
-          );
+        $file = $request->file('file');
+
+        // $parameters = array(
+        //     'file' => file_get_contents($file)
+        //   );
+
+        error_log(file_get_contents($file));
 
         $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->withHeaders([
             'X-Atlassian-Token' => 'no-check',
             "Accept" => 'application/json'
-        ])->attach('attachment', $parameters)->post('https://tricomms.atlassian.net/rest/api/2/issue/'.$id.'/attachments');
+        ])->attach('file', file_get_contents($file))->post('https://tricomms.atlassian.net/rest/api/2/issue/'.$id.'/attachments');
 
-        return $response->throw()->json();
+        return $response->json();
     }
 
     /**

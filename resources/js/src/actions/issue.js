@@ -110,7 +110,6 @@ export const attachFile = (file, id) => async (dispatch) => {
             "Content-Type": "multipart/form-data",
         },
     };
-
     try {
         const res = await axios.post(
             `${BASE_URL}/api/issues/${id}/attachments`,

@@ -67,11 +67,6 @@ export default (state = initialState, action) => {
                 loading: false,
                 sprints: [...state.sprints],
             };
-        case CHANGE_STATUS:
-            return {
-                ...state,
-                loading: false,
-            };
         default:
             return state;
     }

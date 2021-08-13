@@ -133,10 +133,7 @@ export const changeIssueStatus = (issueId, statusId) => async (dispatch) => {
             body,
             config
         );
-        dispatch({
-            type: CHANGE_STATUS,
-            payload: res.data,
-        });
+        console.log(res);
     } catch (err) {
         const { errorMessages } = err.response.data;
         console.log(errorMessages);
