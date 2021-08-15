@@ -19,6 +19,7 @@ const Sprints = ({
     params,
     clearIssue,
     changeIssueStatus,
+    project,
 }) => {
     const [todoItems, setTodoItems] = useState([]);
     const [inProgressItems, setInProgressItems] = useState([]);
@@ -82,6 +83,7 @@ const Sprints = ({
             // setDoneItems([item, ...doneItems]);
         }
         await changeIssueStatus(item.key, statusId);
+        await getSprints(project.boards[0].id);
     };
 
     useEffect(() => {
@@ -318,6 +320,7 @@ const Sprints = ({
 const mapStateToProps = (state) => ({
     sprints: state.sprint.sprints,
     issues: state.sprint.issues,
+    project: state.project.project,
 });
 
 export default connect(mapStateToProps, {

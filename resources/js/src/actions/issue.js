@@ -105,6 +105,8 @@ export const createIssue = (formData, onSuccess) => async (dispatch) => {
 };
 
 export const attachFile = (file, id) => async (dispatch) => {
+    const project = store.getState().project.project;
+
     const config = {
         headers: {
             "Content-Type": "multipart/form-data",
@@ -116,7 +118,9 @@ export const attachFile = (file, id) => async (dispatch) => {
             file,
             config
         );
-        console.log(res);
+
+        dispatch(getBacklog(project?.boards[0]?.id));
+        dispatch(getSprints(project?.boards[0]?.id));
     } catch (err) {
         console.log(err);
     }
@@ -150,7 +154,6 @@ export const moveIssueToEpic = (issue, id) => async (dispatch) => {
 
 export const updateStoryPoints = (value, issueId) => async (dispatch) => {
     const project = store.getState().project.project;
-    const issue = store.getState().backlog.issue;
 
     const config = {
         headers: {
@@ -166,14 +169,6 @@ export const updateStoryPoints = (value, issueId) => async (dispatch) => {
             body,
             config
         );
-
-        if (issue?.id === issueId) {
-            const res = await axios.get(
-                `${BASE_URL}/api/issues/issue/${issueId}`
-            );
-            res.data.fields.sprint = issue.fields.sprint;
-            dispatch(setCurrentIssue(res.data));
-        }
 
         dispatch(getBacklog(project?.boards[0]?.id));
         dispatch(getSprints(project?.boards[0]?.id));

@@ -8,6 +8,7 @@ import {
 } from "../../actions/issue";
 import { setCurrentIssue } from "../../actions/backlog";
 import Comment from "./Comment";
+import moment from "moment";
 
 const IssueDetails = ({
     issue,
@@ -62,7 +63,6 @@ const IssueDetails = ({
     };
 
     const onStoryPointsSubmit = (issueId) => {
-        console.log(issueId);
         updateStoryPoints(value, issueId);
         setEditStoryPoints(null);
     };
@@ -173,6 +173,54 @@ const IssueDetails = ({
                     <small className="font-weight-bold">Description</small>
                     <h6>{issue?.fields.description}</h6>
                 </div>
+                {issue?.fields?.attachment && (
+                    <div>
+                        <small className="font-weight-bold">Attachments</small>
+                        <div className="p-1 position-relative">
+                            <div className="py-1 overflow-auto">
+                                <ul className="p-0">
+                                    {issue?.fields?.attachment.map((file) => (
+                                        <li
+                                            key={file.id}
+                                            className="px-2 d-inline-block align-middle my-1 position-relative"
+                                            style={{ listStyleType: "none" }}
+                                        >
+                                            <div
+                                                className="card p-2 "
+                                                style={{ width: 200 }}
+                                            >
+                                                <div className="d-flex">
+                                                    <div className="flex-grow-1">
+                                                        <h6>{file.filename}</h6>
+                                                        <small className="card-text">
+                                                            {moment(
+                                                                file.created
+                                                            ).format("lll")}
+                                                        </small>
+                                                    </div>
+                                                    <div>
+                                                        {" "}
+                                                        <a
+                                                            href={file.content}
+                                                            className="btn btn-sm btn-light"
+                                                        >
+                                                            <i
+                                                                className="bi bi-cloud-arrow-down"
+                                                                style={{
+                                                                    fontSize: 20,
+                                                                }}
+                                                            ></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <div className="py-3">
                     <h6 className="font-weight-bold">Sub tasks</h6>
                     <div className="collapse" id="subTaskInput">

@@ -1,0 +1,36 @@
+<div
+                                                className="card"
+                                                style={{ width: 155 }}
+                                            >
+                                                <img
+                                                    src={file.content}
+                                                    alt={file.filename}
+                                                />
+                                                <div className="card-body p-1">
+                                                    <h6>{file.filename}</h6>
+                                                    <small className="card-text">
+                                                        {moment(
+                                                            file.created
+                                                        ).format("lll")}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div
+                                                className="position-absolute"
+                                                style={{ top: 0, right: 5 }}
+                                            >
+                                                <span>
+                                                    <a
+                                                        href={file.content}
+                                                        className="btn btn-sm btn-light"
+                                                    >
+                                                        <i
+                                                            className="bi bi-cloud-arrow-down"
+                                                            style={{
+                                                                fontSize: 20,
+                                                            }}
+                                                        ></i>
+                                                    </a>
+                                                </span>
+                                                <span></span>
+                                            </div>

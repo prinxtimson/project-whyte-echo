@@ -3,13 +3,22 @@ import { connect } from "react-redux";
 import Container from "../Layouts/Container";
 import AddIssueForm from "./AddIssueForm";
 import { createSprint } from "../../actions/sprint";
+import { setCurrentIssue } from "../../actions/backlog";
 import EditSprint from "./EditSprint";
 import Sprint from "./Sprint";
 import "./style.css";
 import Issue from "./Issue";
 import IssueDetails from "./IssueDetails";
 
-const Backlog = ({ issues, issue, createSprint, sprints, project, params }) => {
+const Backlog = ({
+    issues,
+    issue,
+    createSprint,
+    sprints,
+    project,
+    params,
+    setCurrentIssue,
+}) => {
     const [currentSprint, setCurrentSprint] = useState(null);
     const futureSprint = sprints.filter((item) => item.state === "future");
     const nextSprint = futureSprint.length > 0 ? futureSprint[0].id : null;
@@ -21,6 +30,22 @@ const Backlog = ({ issues, issue, createSprint, sprints, project, params }) => {
         };
         createSprint(data);
     };
+
+    useEffect(() => {
+        const backlogIssue = issues.find((item) => item.id === issue?.id);
+        const sp = sprints.find(
+            (item) => item.id === issue?.fields?.sprint?.id
+        );
+        const sprintIssue = sp?.issues?.find((item) => item.id === issue?.id);
+
+        if (backlogIssue) {
+            setCurrentIssue(backlogIssue);
+        }
+
+        if (sprintIssue) {
+            setCurrentIssue(sprintIssue);
+        }
+    }, [issues, sprints]);
 
     return (
         <Container params={params}>
@@ -145,4 +170,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     createSprint,
+    setCurrentIssue,
 })(Backlog);
