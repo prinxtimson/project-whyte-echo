@@ -126,6 +126,19 @@ export const attachFile = (file, id) => async (dispatch) => {
     }
 };
 
+export const delFile = (id) => async (dispatch) => {
+    const project = store.getState().project.project;
+
+    try {
+        await axios.delete(`${BASE_URL}/api/issues/${id}/attachments`);
+
+        dispatch(getBacklog(project?.boards[0]?.id));
+        dispatch(getSprints(project?.boards[0]?.id));
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const moveIssueToEpic = (issue, id) => async (dispatch) => {
     const project = store.getState().project.project;
 

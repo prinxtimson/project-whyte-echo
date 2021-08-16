@@ -31,6 +31,7 @@ Route::delete('/issues/{id}', [IssueController::class, 'delIssue']);
 Route::post('/issues/{id}/comment', [IssueController::class, 'comment']);
 Route::delete('/issues/{id}/comment/{commentId}', [IssueController::class, 'delComment']);
 Route::post('/issues/{id}/attachments', [IssueController::class, 'attachments']);
+Route::delete('/issues/{id}/attachments', [IssueController::class, 'delAttachment']);
 Route::post('/issues/{id}/transitions', [IssueController::class, 'transitions']);
 Route::get('/issues/{id}/transitions', [IssueController::class, 'getTransitions']);
 Route::put('/issues/story_points/{id}/{boardId}', [IssueController::class, 'story_points']);

@@ -45,6 +45,10 @@ const Backlog = ({
         if (sprintIssue) {
             setCurrentIssue(sprintIssue);
         }
+
+        if (issue?.fields?.project?.id !== project?.id) {
+            setCurrentIssue(null);
+        }
     }, [issues, sprints]);
 
     return (

@@ -5,6 +5,7 @@ import {
     moveIssueToEpic,
     createIssue,
     updateStoryPoints,
+    delFile,
 } from "../../actions/issue";
 import { setCurrentIssue } from "../../actions/backlog";
 import Comment from "./Comment";
@@ -19,6 +20,7 @@ const IssueDetails = ({
     updateStoryPoints,
     createIssue,
     project,
+    delFile,
 }) => {
     const fileInput = useRef(null);
     const [summary, setSummary] = useState("");
@@ -142,7 +144,7 @@ const IssueDetails = ({
                             <i
                                 className="bi bi-paperclip "
                                 style={{
-                                    fontSize: 20,
+                                    fontSize: 18,
                                 }}
                             ></i>
                         </button>
@@ -198,19 +200,42 @@ const IssueDetails = ({
                                                             ).format("lll")}
                                                         </small>
                                                     </div>
-                                                    <div>
+                                                    <div className="d-flex">
                                                         {" "}
-                                                        <a
-                                                            href={file.content}
-                                                            className="btn btn-sm btn-light"
-                                                        >
-                                                            <i
-                                                                className="bi bi-cloud-arrow-down"
-                                                                style={{
-                                                                    fontSize: 20,
-                                                                }}
-                                                            ></i>
-                                                        </a>
+                                                        <span className="mx-1">
+                                                            <a
+                                                                href={
+                                                                    file.content
+                                                                }
+                                                                className="btn btn-sm btn-light p-0"
+                                                            >
+                                                                <i
+                                                                    className="bi bi-cloud-arrow-down"
+                                                                    style={{
+                                                                        fontSize: 18,
+                                                                    }}
+                                                                ></i>
+                                                            </a>
+                                                        </span>
+                                                        <span className="mx-1">
+                                                            <a
+                                                                href="#"
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    delFile(
+                                                                        file.id
+                                                                    )
+                                                                }
+                                                                className="btn btn-sm btn-light p-0"
+                                                            >
+                                                                <i
+                                                                    className="bi bi-trash"
+                                                                    style={{
+                                                                        fontSize: 18,
+                                                                    }}
+                                                                ></i>
+                                                            </a>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -468,4 +493,5 @@ export default connect(mapStateToProps, {
     createIssue,
     setCurrentIssue,
     updateStoryPoints,
+    delFile,
 })(IssueDetails);

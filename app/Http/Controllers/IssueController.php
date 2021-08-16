@@ -193,6 +193,14 @@ class IssueController extends Controller
         return $response->throw()->json();
     }
 
+    public function delAttachment($id)
+    {
+        //
+        $response = Http::withBasicAuth('kososhiprinx@gmail.com', 'Zrp2E2EbGj1kpzbyeGAcA8AC')->delete('https://tricomms.atlassian.net/rest/api/2/attachment/'.$id);
+
+        return $response->throw()->json();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
